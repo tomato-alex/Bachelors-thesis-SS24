@@ -1,0 +1,23 @@
+{
+    "name": "md-parser-questionnaires",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "bin": {
+        "mdparser": "./index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "type": "module",
+    "dependencies": {
+        "commander": "^12.1.0",
+        "express": "^4.21.1",
+        "fs": "^0.0.1-security",
+        "marked": "^15.0.0",
+        "multer": "^1.4.5-lts.1"
+    }
+}
