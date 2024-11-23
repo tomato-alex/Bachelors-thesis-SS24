@@ -161,6 +161,17 @@
                     // Update raw HTML code section
                     document.getElementById("html-code-pre").textContent =
                         result;
+
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(result, "text/html");
+                    const scripts = doc.querySelectorAll("script");
+
+                    scripts.forEach((script) => {
+                        console.log("script" + script.textContent);
+                        const scriptTag = document.createElement("script");
+                        scriptTag.textContent = script.textContent;
+                        document.body.appendChild(scriptTag);
+                    });
                 });
 
             document

@@ -9,6 +9,10 @@ program
     .description("CLI tool for parsing custom Markdown for questionnaires")
     .argument("<inputFile>", "Markdown file to parse")
     .option("-o, --output <outputFile>", "File to write the generated HTML to")
+    .option("-d, --display", "Display the generated HTML in the console")
+    .help((info) => {
+        return info;
+    })
     .action((inputFile, options) => {
         fs.readFile(inputFile, "utf8", (err, data) => {
             if (err) {
@@ -16,16 +20,18 @@ program
                 process.exit(1);
             }
 
-            // Then, apply the custom questionnaire block parser
-            const customHTML = parseMarkdownToHTML(data);
-            console.log("custom html > " + customHTML);
+            // First, apply the custom questionnaire block parser
+            // Then, parse the Markdown using the standard marked parser for basic Markdown
+            const customMarkdownToHTML = parseMarkdownToHTML(data);
+            const standardMarkdownToHTML = marked(customMarkdownToHTML);
 
-            // First, parse the Markdown using the standard marked parser for basic Markdown
-            const standardHTML = marked(customHTML);
-            console.log("standard html > " + standardHTML);
+            if (options.display) {
+                console.log("custom html > " + customMarkdownToHTML);
+                console.log("standard html > " + standardMarkdownToHTML);
+            }
 
             if (options.output) {
-                fs.writeFile(options.output, standardHTML, (err) => {
+                fs.writeFile(options.output, standardMarkdownToHTML, (err) => {
                     if (err) {
                         console.error(`Error writing file: ${err.message}`);
                         process.exit(1);
@@ -33,7 +39,7 @@ program
                     console.log(`Output written to ${options.output}`);
                 });
             } else {
-                console.log(standardHTML);
+                console.log(standardMarkdownToHTML);
             }
         });
     });

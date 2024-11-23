@@ -32,7 +32,7 @@ app.post("/parse", upload.single("markdown-file"), (req, res) => {
 
         // Parse the markdown
         const customHTML = parseMarkdownToHTML(data);
-        console.log("customHTML" + customHTML);
+        //console.log("customHTML" + customHTML);
         const renderedHTML = marked(customHTML);
 
         // Return the rendered HTML to the client

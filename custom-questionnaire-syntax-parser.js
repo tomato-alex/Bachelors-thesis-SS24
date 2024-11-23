@@ -29,8 +29,8 @@ export function parseMarkdownToHTML(markdown) {
         const step = parseInt(block.match(/step:\s*(\d+)/)[1]);
 
         // Create HTML with styles and formatting
-        let html = `<div class="slider-container" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">`;
-        html += `\n\t<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333;">${label}</label><br>`;
+        let html = `<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333;">${label}</label><br>`;
+        html += `\n<div class="slider-container" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">`;
         html += `\n\t<input type="range" id="${label}" name="${label}" min="${min}" max="${max}" step="${step}" value="${min}" list="slider-values" 
                     style="width: 100%; height: 8px; background: #ddd; border-radius: 5px; outline: none; transition: all 0.3s;">`;
         html += `\n\t<datalist id="slider-values">`;
@@ -46,31 +46,15 @@ export function parseMarkdownToHTML(markdown) {
 
         // Adding interactivity: displaying the current value of the slider
         html += `
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const slider = document.getElementById("${label}");
-                    const valueDisplay = slider.nextElementSibling;
-                    slider.addEventListener("input", function() {
-                        valueDisplay.textContent = slider.value;
-                    });
+            <script class="questionnaire-md">
+                const slider = document.getElementById("${label}");
+                const valueDisplay = slider.nextElementSibling;
+                slider.addEventListener("input", function() {
+                    valueDisplay.textContent = slider.value;
                 });
             </script>`;
 
         return html;
-    };
-
-    const parseRating2 = (block) => {
-        const label = block.match(/label:\s*(.*)/)[1];
-        const min = block.match(/min:\s*(\d+)/)[1];
-        const max = block.match(/max:\s*(\d+)/)[1];
-        const symbol = block.match(/symbol:\s*(.)/)[1];
-        let ratingHTML = `\n<label>${label}</label><br>`;
-        for (let i = min; i <= max; i++) {
-            ratingHTML += `\n\t<input type="radio" name="${label}" value="${i}">${symbol.repeat(
-                i
-            )} `;
-        }
-        return ratingHTML + "<br>";
     };
 
     const ratingStyle = () => {
@@ -108,6 +92,7 @@ export function parseMarkdownToHTML(markdown) {
                 2% 35%,
                 39% 35%
             );
+            transition: background-color 0.3s;
             }`;
         /* make stars *after* the checked radio gray*/
         ratingHTML += `\n.star:checked + .star-label ~ .star-label .star-shape {
@@ -148,17 +133,17 @@ export function parseMarkdownToHTML(markdown) {
         return ratingHTML;
     };
 
+    // source: https://dev.to/vaibhavbshete/star-rating-input-using-html-css-45jj
     const parseRating = (block) => {
         const label = block.match(/label:\s*(.*)/)[1];
         const min = block.match(/min:\s*(\d+)/)[1];
         const max = block.match(/max:\s*(\d+)/)[1];
-        const symbol = block.match(/symbol:\s*(.)/)[1];
 
         let ratingHTML = `\n<style>`;
         ratingHTML += ratingStyle();
         ratingHTML += `\n</style>`;
 
-        ratingHTML += `\n<label>${label}</label><br>`;
+        ratingHTML += `\n<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333;">${label}</label><br>`;
         ratingHTML += `\n<div class="star-wrap">`;
         ratingHTML += `<input class="star" checked type="radio" value="-1" id="skip-star" name="star-radio" autocomplete="off" />`;
         ratingHTML += `<label class="star-label hidden"></label>`;
@@ -180,38 +165,122 @@ export function parseMarkdownToHTML(markdown) {
     const parseRadio = (block) => {
         const label = block.match(/label:\s*(.*)/)[1];
         const options = parseOptions(block.match(/options:([\s\S]*)/)[1]);
-        let radioHTML = `\n<label>${label}</label><br>`;
-        options.forEach((option) => {
-            radioHTML += `\n\t<input type="radio" name="${label}" value="${option}">${option}<br>`;
+
+        // Begin constructing the radio button HTML with some basic styling
+        let radioHTML = `<div class="radio-group" style="margin-bottom: 15px;">`;
+        radioHTML += `\n\t<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333;">${label}</label><br>`;
+
+        options.forEach((option, index) => {
+            radioHTML += `\n\t<div class="radio-option" style="margin-bottom: 10px; display: flex; align-items: center;">`;
+            radioHTML += `\n\t\t<input type="radio" id="${label}-${index}" name="${label}" value="${option}" `;
+            radioHTML += `style="appearance: none; width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 50%; 
+                            margin-right: 10px; cursor: pointer; transition: background-color 0.3s, border 0.3s;">`;
+            radioHTML += `\n\t\t<label for="${label}-${index}" style="font-size: 1em; color: #666; cursor: pointer;">${option}</label>`;
+            radioHTML += `</div>`;
         });
+
+        radioHTML += `</div>`;
+
+        radioHTML += `<style>`;
+        radioHTML += `\ninput[type="radio"]:checked {
+                background-color: #4CAF50; /* Green color when selected */
+                border-color: #4CAF50; /* Green border */
+            }
+            input[type="radio"]:checked::before {
+                content: "\\2022"; /* Unicode for a filled circle */
+                font-size: 18px;
+                color: white; /* White circle in the center */
+                position: absolute;
+                top: 2px;
+                left: 2px;
+            }`;
+        radioHTML += `</style>`;
+
         return radioHTML;
     };
 
     const parseMultiSelect = (block) => {
         const label = block.match(/label:\s*(.*)/)[1];
         const options = parseOptions(block.match(/options:([\s\S]*)/)[1]);
-        let multiSelectHTML = `\n<label>${label}</label><br>`;
-        options.forEach((option) => {
-            multiSelectHTML += `\n\t<input type="checkbox" name="${label}" value="${option}">${option}<br>`;
+
+        let multiSelectHTML = `<div class="multi-select-group" style="margin-bottom: 15px;">`;
+        multiSelectHTML += `\n<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333;">${label}</label><br>`;
+
+        options.forEach((option, index) => {
+            multiSelectHTML += `\n\t<div class="multi-select-option" style="margin-bottom: 10px; display: flex; align-items: center;">`;
+            multiSelectHTML += `\n\t<input type="checkbox" name="${label}" value="${option}" id="${label}-${index}"`;
+            multiSelectHTML += `style="appearance: none; width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 35%; 
+                                margin-right: 10px; cursor: pointer; transition: background-color 0.3s, border 0.3s;">`;
+            multiSelectHTML += `\n\t\t<label for="${label}-${index}" style="font-size: 1em; color: #666; cursor: pointer;">${option}</label>`;
+            multiSelectHTML += `</div>`;
         });
+
+        multiSelectHTML += `</div>`;
+
+        multiSelectHTML += `<style>`;
+        multiSelectHTML += `\ninput[type="checkbox"]:checked {
+                background-color: #4CAF50; /* Green color when selected */
+                border-color: #4CAF50; /* Green border */
+            }
+            input[type="checkbox"]:checked::before {
+                content: "\\2022"; /* Unicode for a filled circle */
+                font-size: 18px;
+                color: white; /* White circle in the center */
+                position: absolute;
+                top: 2px;
+                left: 2px;
+            }`;
+        multiSelectHTML += `</style>`;
         return multiSelectHTML;
     };
 
     const parseTextInput = (block) => {
         const label = block.match(/label:\s*(.*)/)[1];
         const placeholder = block.match(/placeholder:\s*(.*)/)[1];
-        return `\n<label>${label}</label><br><textarea name="${label}" placeholder="${placeholder}"></textarea><br>`;
+        let textInputHTML = "";
+
+        textInputHTML += `<div class="text-input-container" style="margin-bottom: 20px;">`;
+        textInputHTML += `\n<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333; margin-bottom: 5px; display: block;">${label}</label>`;
+        textInputHTML += `\n<textarea name="${label}" placeholder="${placeholder}" 
+                style="width: 90%; height: 150px; padding: 10px; font-size: 1em; border: 2px solid #ccc; 
+                border-radius: 8px; transition: all 0.3s ease; resize: vertical;"></textarea>`;
+        textInputHTML += `</div>`;
+
+        return textInputHTML;
     };
 
     const parseDropdown = (block, isMulti) => {
         const label = block.match(/label:\s*(.*)/)[1];
         const options = parseOptions(block.match(/options:([\s\S]*)/)[1]);
         const multiAttr = isMulti ? "multiple" : "";
-        let dropdownHTML = `\n<label>${label}</label><select name="${label}" ${multiAttr}>`;
+
+        let dropdownHTML = "";
+
+        dropdownHTML += `<div class="dropdown-container" style="margin-bottom: 20px;">`;
+        dropdownHTML += `\n\t<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333; margin-bottom: 5px; display: block;">${label}</label>`;
+        dropdownHTML += `\n\t<select name="${label}" ${multiAttr} 
+                style="width: 100%; padding: 10px; font-size: 1em; border: 2px solid #ccc; 
+                border-radius: 8px; transition: all 0.3s ease; background-color: #fff;">`;
+
         options.forEach((option) => {
-            dropdownHTML += `\n\t<option value="${option}">${option}</option>`;
+            dropdownHTML += `\n\t\t<option value="${option}">${option}</option>`;
         });
-        return dropdownHTML + "\n</select><br>";
+
+        dropdownHTML += `\n\t</select>`;
+        dropdownHTML += `\n</div>`;
+
+        dropdownHTML += `<script class="questionnaire-md">
+        document.querySelector('select[name="${label}"]').querySelectorAll('option').forEach(option => {
+            option.addEventListener('click', () => {
+                console.log('option.selected ' + option.selected);
+                option.setAttribute('selected', option.selected === 'selected' ? null : 'selected');
+                option.selected = !option.selected;
+                console.log('option.selected ' + option.selected);
+            });
+        });
+        </script>`;
+
+        return dropdownHTML;
     };
 
     // Markdown block parsers
