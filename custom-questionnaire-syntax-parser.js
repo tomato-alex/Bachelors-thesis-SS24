@@ -273,7 +273,7 @@ export function parseMarkdownToHTML(markdown) {
         document.querySelector('select[name="${label}"]').querySelectorAll('option').forEach(option => {
             option.addEventListener('click', () => {
                 console.log('option.selected ' + option.selected);
-                option.setAttribute('selected', option.selected === 'selected' ? null : 'selected');
+                option.setAttribute('selected', option.selected === 'selected' ? null : 'selected'); //TODO check why the multiselect doesnt work
                 option.selected = !option.selected;
                 console.log('option.selected ' + option.selected);
             });

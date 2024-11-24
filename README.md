@@ -44,3 +44,5 @@ TODO:
 -   index.html copy and download html button
 -   reformat the "architecture"
 -   parser for different md syntax. Dont like the current one
+-   dynamic script loading in webpage
+-   multiselect doesnt work
