@@ -4,23 +4,6 @@ export function parseMarkdownToHTML(markdown) {
     // Helper functions
     const parseOptions = (optionsStr) => optionsStr.split(/\n\s*-\s*/).slice(1);
 
-    const parseSlider2 = (block) => {
-        const label = block.match(/label:\s*(.*)/)[1];
-        const min = parseInt(block.match(/min:\s*(\d+)/)[1]);
-        const max = parseInt(block.match(/max:\s*(\d+)/)[1]);
-        const step = parseInt(block.match(/step:\s*(\d+)/)[1]);
-
-        let html = `\n<label>${label} ${min} - ${max} {${step}}</label><br>`;
-        html += `\n<input type="range" name="${label}" min="${min}" max="${max}" step="${step}" value="${min}" list="slider-values">`;
-        html += `\n<datalist id="slider-values">`;
-        for (let i = min; i <= max; i += step) {
-            html += `\n\t<option value="${i}" label="${i}"></option>`;
-        }
-        html += "\n</datalist><br>";
-
-        return html;
-    };
-
     const parseSlider = (block) => {
         // Extracting values from the block using regex
         const label = block.match(/label:\s*(.*)/)[1];
