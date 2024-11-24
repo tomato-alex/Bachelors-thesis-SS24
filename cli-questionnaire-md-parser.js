@@ -10,6 +10,7 @@ program
     .argument("<inputFile>", "Markdown file to parse")
     .option("-o, --output <outputFile>", "File to write the generated HTML to")
     .option("-d, --display", "Display the generated HTML in the console")
+    .option("--debug", "Display debug information")
     .help((info) => {
         return info;
     })
@@ -20,14 +21,25 @@ program
                 process.exit(1);
             }
 
+            if (!inputFile.endsWith(".md")) {
+                console.error(`Error: File must be a .md file`);
+                process.exit(1);
+            }
+
             // First, apply the custom questionnaire block parser
             // Then, parse the Markdown using the standard marked parser for basic Markdown
             const customMarkdownToHTML = parseMarkdownToHTML(data);
             const standardMarkdownToHTML = marked(customMarkdownToHTML);
 
+            if (options.debug) {
+                console.log(
+                    "Output before standard Parser > " + customMarkdownToHTML
+                );
+                console.log("Entire output > " + standardMarkdownToHTML);
+            }
+
             if (options.display) {
-                console.log("custom html > " + customMarkdownToHTML);
-                console.log("standard html > " + standardMarkdownToHTML);
+                console.log("Entire output > \n" + standardMarkdownToHTML);
             }
 
             if (options.output) {
