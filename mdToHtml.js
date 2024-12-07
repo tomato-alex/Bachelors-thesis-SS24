@@ -1,10 +1,68 @@
 #!/usr/bin/env node
+import { marked } from "marked";
 
-export function parseMarkdownToHTML(markdown) {
-    // Helper functions
-    const parseOptions = (optionsStr) => optionsStr.split(/\n\s*-\s*/).slice(1);
+export class MarkdownToHtml {
+    constructor() {
+        this.output = "";
+        this.createParsers();
+    }
 
-    const parseSlider = (block) => {
+    parseData(data) {
+        // First, apply the custom questionnaire block parser
+        // Then, parse the Markdown using the standard marked parser for basic Markdown
+        let html = data;
+        this.blockParsers.forEach(({ regex, parser }) => {
+            html = html.replace(regex, (match, blockContent) =>
+                parser(blockContent.trim())
+            );
+        });
+
+        this.output = marked(html);
+        return this.output;
+    }
+
+    exportData() {
+        return this.output;
+    }
+
+    createParsers() {
+        this.blockParsers = [
+            {
+                regex: /\[slider\]([\s\S]*?)\[\/slider\]/g,
+                parser: (block) => this.parseSlider(block),
+            },
+            {
+                regex: /\[rating\]([\s\S]*?)\[\/rating\]/g,
+                parser: (block) => this.parseRating(block),
+            },
+            {
+                regex: /\[radio\]([\s\S]*?)\[\/radio\]/g,
+                parser: (block) => this.parseRadio(block),
+            },
+            {
+                regex: /\[multi-select\]([\s\S]*?)\[\/multi-select\]/g,
+                parser: (block) => this.parseMultiSelect(block),
+            },
+            {
+                regex: /\[text-input\]([\s\S]*?)\[\/text-input\]/g,
+                parser: (block) => this.parseTextInput(block),
+            },
+            {
+                regex: /\[dropdown-single\]([\s\S]*?)\[\/dropdown-single\]/g,
+                parser: (block) => this.parseDropdown(block, false),
+            },
+            {
+                regex: /\[dropdown-multi\]([\s\S]*?)\[\/dropdown-multi\]/g,
+                parser: (block) => this.parseDropdown(block, true),
+            },
+        ];
+    }
+
+    parseOptions(optionsStr) {
+        return optionsStr.split(/\n\s*-\s*/).slice(1);
+    }
+
+    parseSlider(block) {
         // Extracting values from the block using regex
         const label = block.match(/label:\s*(.*)/)[1];
         const min = parseInt(block.match(/min:\s*(\d+)/)[1]);
@@ -15,7 +73,7 @@ export function parseMarkdownToHTML(markdown) {
         let html = `<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333;">${label}</label><br>`;
         html += `\n<div class="slider-container" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">`;
         html += `\n\t<input type="range" id="${label}" name="${label}" min="${min}" max="${max}" step="${step}" value="${min}" list="slider-values" 
-                    style="width: 100%; height: 8px; background: #ddd; border-radius: 5px; outline: none; transition: all 0.3s;">`;
+                     style="width: 100%; height: 8px; background: #ddd; border-radius: 5px; outline: none; transition: all 0.3s;">`;
         html += `\n\t<datalist id="slider-values">`;
 
         // Adding options to the datalist
@@ -29,18 +87,18 @@ export function parseMarkdownToHTML(markdown) {
 
         // Adding interactivity: displaying the current value of the slider
         html += `
-            <script class="questionnaire-md">
-                const slider = document.getElementById("${label}");
-                const valueDisplay = slider.nextElementSibling;
-                slider.addEventListener("input", function() {
-                    valueDisplay.textContent = slider.value;
-                });
-            </script>`;
+             <script class="questionnaire-md">
+                 const slider = document.getElementById("${label}");
+                 const valueDisplay = slider.nextElementSibling;
+                 slider.addEventListener("input", function() {
+                     valueDisplay.textContent = slider.value;
+                 });
+             </script>`;
 
         return html;
-    };
+    }
 
-    const ratingStyle = () => {
+    ratingStyle() {
         let ratingHTML = "";
         ratingHTML += `.star-wrap {
             width: max-content;
@@ -114,16 +172,16 @@ export function parseMarkdownToHTML(markdown) {
             display: none;
           }`;
         return ratingHTML;
-    };
+    }
 
     // source: https://dev.to/vaibhavbshete/star-rating-input-using-html-css-45jj
-    const parseRating = (block) => {
+    parseRating(block) {
         const label = block.match(/label:\s*(.*)/)[1];
         const min = block.match(/min:\s*(\d+)/)[1];
         const max = block.match(/max:\s*(\d+)/)[1];
 
         let ratingHTML = `\n<style>`;
-        ratingHTML += ratingStyle();
+        ratingHTML += this.ratingStyle();
         ratingHTML += `\n</style>`;
 
         ratingHTML += `\n<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333;">${label}</label><br>`;
@@ -134,7 +192,7 @@ export function parseMarkdownToHTML(markdown) {
         for (let i = min; i <= max; i++) {
             ratingHTML += `\n<input class="star" type="radio" id="st-${i}" value="${i}" name="star-radio" autocomplete="off"`;
             ratingHTML += `\n style="`;
-            ratingHTML += ratingStyle();
+            ratingHTML += this.ratingStyle();
             ratingHTML += `"/>`;
             ratingHTML += `\n<label class="star-label" for="st-${i}"><div class="star-shape"></div></label>`;
         }
@@ -143,11 +201,11 @@ export function parseMarkdownToHTML(markdown) {
         ratingHTML += `\n</div>`;
         ratingHTML += "<br>";
         return ratingHTML;
-    };
+    }
 
-    const parseRadio = (block) => {
+    parseRadio(block) {
         const label = block.match(/label:\s*(.*)/)[1];
-        const options = parseOptions(block.match(/options:([\s\S]*)/)[1]);
+        const options = this.parseOptions(block.match(/options:([\s\S]*)/)[1]);
 
         // Begin constructing the radio button HTML with some basic styling
         let radioHTML = `<div class="radio-group" style="margin-bottom: 15px;">`;
@@ -180,11 +238,11 @@ export function parseMarkdownToHTML(markdown) {
         radioHTML += `</style>`;
 
         return radioHTML;
-    };
+    }
 
-    const parseMultiSelect = (block) => {
+    parseMultiSelect(block) {
         const label = block.match(/label:\s*(.*)/)[1];
-        const options = parseOptions(block.match(/options:([\s\S]*)/)[1]);
+        const options = this.parseOptions(block.match(/options:([\s\S]*)/)[1]);
 
         let multiSelectHTML = `<div class="multi-select-group" style="margin-bottom: 15px;">`;
         multiSelectHTML += `\n<label for="${label}" style="font-size: 1.2em; font-weight: bold; color: #333;">${label}</label><br>`;
@@ -215,9 +273,9 @@ export function parseMarkdownToHTML(markdown) {
             }`;
         multiSelectHTML += `</style>`;
         return multiSelectHTML;
-    };
+    }
 
-    const parseTextInput = (block) => {
+    parseTextInput(block) {
         const label = block.match(/label:\s*(.*)/)[1];
         const placeholder = block.match(/placeholder:\s*(.*)/)[1];
         let textInputHTML = "";
@@ -230,11 +288,11 @@ export function parseMarkdownToHTML(markdown) {
         textInputHTML += `</div>`;
 
         return textInputHTML;
-    };
+    }
 
-    const parseDropdown = (block, isMulti) => {
+    parseDropdown(block, isMulti) {
         const label = block.match(/label:\s*(.*)/)[1];
-        const options = parseOptions(block.match(/options:([\s\S]*)/)[1]);
+        const options = this.parseOptions(block.match(/options:([\s\S]*)/)[1]);
         const multiAttr = isMulti ? "multiple" : "";
 
         let dropdownHTML = "";
@@ -264,38 +322,5 @@ export function parseMarkdownToHTML(markdown) {
         </script>`;
 
         return dropdownHTML;
-    };
-
-    // Markdown block parsers
-    const blockParsers = [
-        { regex: /\[slider\]([\s\S]*?)\[\/slider\]/g, parser: parseSlider },
-        { regex: /\[rating\]([\s\S]*?)\[\/rating\]/g, parser: parseRating },
-        { regex: /\[radio\]([\s\S]*?)\[\/radio\]/g, parser: parseRadio },
-        {
-            regex: /\[multi-select\]([\s\S]*?)\[\/multi-select\]/g,
-            parser: parseMultiSelect,
-        },
-        {
-            regex: /\[text-input\]([\s\S]*?)\[\/text-input\]/g,
-            parser: parseTextInput,
-        },
-        {
-            regex: /\[dropdown-single\]([\s\S]*?)\[\/dropdown-single\]/g,
-            parser: (block) => parseDropdown(block, false),
-        },
-        {
-            regex: /\[dropdown-multi\]([\s\S]*?)\[\/dropdown-multi\]/g,
-            parser: (block) => parseDropdown(block, true),
-        },
-    ];
-
-    // Apply parsers to the markdown
-    let html = markdown;
-    blockParsers.forEach(({ regex, parser }) => {
-        html = html.replace(regex, (match, blockContent) =>
-            parser(blockContent.trim())
-        );
-    });
-
-    return html;
+    }
 }

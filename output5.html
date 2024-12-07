@@ -5,7 +5,7 @@
 <p><label for="How satisfied are you with this presentation?" style="font-size: 1.2em; font-weight: bold; color: #333;">How satisfied are you with this presentation?</label><br></p>
 <div class="slider-container" style="margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
 	<input type="range" id="How satisfied are you with this presentation?" name="How satisfied are you with this presentation?" min="1" max="10" step="1" value="1" list="slider-values" 
-                    style="width: 100%; height: 8px; background: #ddd; border-radius: 5px; outline: none; transition: all 0.3s;">
+                     style="width: 100%; height: 8px; background: #ddd; border-radius: 5px; outline: none; transition: all 0.3s;">
 	<datalist id="slider-values">
 	<option value="1" label="1"></option>
 	<option value="2" label="2"></option>
@@ -20,13 +20,13 @@
 	</datalist>
 <div class="slider-value" style="margin-top: 10px; text-align: center; font-size: 1.2em; color: #555;">1</div>
 </div>
-            <script class="questionnaire-md">
-                const slider = document.getElementById("How satisfied are you with this presentation?");
-                const valueDisplay = slider.nextElementSibling;
-                slider.addEventListener("input", function() {
-                    valueDisplay.textContent = slider.value;
-                });
-            </script>
+             <script class="questionnaire-md">
+                 const slider = document.getElementById("How satisfied are you with this presentation?");
+                 const valueDisplay = slider.nextElementSibling;
+                 slider.addEventListener("input", function() {
+                     valueDisplay.textContent = slider.value;
+                 });
+             </script>
 
 
 <style>.star-wrap {

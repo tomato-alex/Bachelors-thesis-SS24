@@ -2,15 +2,33 @@
 
 ## Questions
 
-?:scale-slider q:"How satisfied are you with this presentation?"
-::min 1
-::max 10
-::step 1
+::slider 1 10 1 "How satisfied are you with this presentation?"
 
-?:scale-rating q:"How satisfied are you with the quick mockup?" min:1 max:5 step:1
+::stars 5 "How would you rate this service?"
+
+::radio "What is your favourite fruit?"
+() Apple
+() Banana
+() Orange
+
+::checkbox "Whats your favourite subject?"
+[] FDA
+[] SE2
+[] PR1
+
+::dropdown "How do you prefer to be contacted?"
+() Phone
+() Email
+() None
+
+::dropdown "Which lingos do you speak?"
+[] English
+[] Spanish
+[] German
+
+?:scale-rating q:"How satisfied are you with the quick mockup?"
 ::min 1
 ::max 5
-::step 1
 
 ?:checkbox-single q:"What is your favorite fruit?"
 ::Apple
