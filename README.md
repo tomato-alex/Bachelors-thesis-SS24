@@ -32,9 +32,9 @@ To run the graphical tool, use the following command:
 node servermockup.js
 ```
 
-Then, access the webpage at `http://localhost:3000/`. The GUI allows for users to upload a Markdown file with questionnaire syntax and visualizes the output directly in the browser.
+~~Then, access the webpage at `http://localhost:3000/`. The GUI allows for users to upload a Markdown file with questionnaire syntax and visualizes the output directly in the browser.~~
 
-TODO v1:
+~~TODO v1:
 
 -   rename program name to be shorter
 -   consider other program options
@@ -46,9 +46,12 @@ TODO v1:
 -   parser for different md syntax. Dont like the current one
 -   dynamic script loading in webpage
 -   multiselect doesnt work
+    ~~
 
 TODO v2:
 
 -   Implement a Json to LSS formatter
 -   Add inheritance and use the Strategy pattern to decide which parser to use.
 -   reimplement the frontend to be able to display the lss structure
+-   make required questions
+-   multiselect & rating implementation, currently not working, because of subquestions. Wtf are subquestions
