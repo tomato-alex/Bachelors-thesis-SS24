@@ -1,44 +1,9 @@
+<rows>
 <row>
-    <qid></qid>
-    <attribute><![CDATA[answer_order]]></attribute>
-    <value><![CDATA[normal]]></value>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[category_separator]]></attribute>
-    <value/>
-    <language/>
-   </row>
-   <row>
     <qid></qid>
     <attribute><![CDATA[cssclass]]></attribute>
     <value/>
     <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[dropdown_prefix]]></attribute>
-    <value><![CDATA[0]]></value>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[dropdown_size]]></attribute>
-    <value/>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[em_validation_q]]></attribute>
-    <value/>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[em_validation_q_tip]]></attribute>
-    <value/>
-    <language><![CDATA[en]]></language>
    </row>
    <row>
     <qid></qid>
@@ -54,43 +19,7 @@
    </row>
    <row>
     <qid></qid>
-    <attribute><![CDATA[other_comment_mandatory]]></attribute>
-    <value><![CDATA[0]]></value>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[other_position]]></attribute>
-    <value><![CDATA[default]]></value>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[other_position_code]]></attribute>
-    <value/>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[other_replace_text]]></attribute>
-    <value/>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <qid></qid>
     <attribute><![CDATA[page_break]]></attribute>
-    <value><![CDATA[0]]></value>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[printable_help]]></attribute>
-    <value/>
-    <language><![CDATA[en]]></language>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[public_statistics]]></attribute>
     <value><![CDATA[0]]></value>
     <language/>
    </row>
@@ -104,12 +33,6 @@
     <qid></qid>
     <attribute><![CDATA[save_as_default]]></attribute>
     <value><![CDATA[N]]></value>
-    <language/>
-   </row>
-   <row>
-    <qid></qid>
-    <attribute><![CDATA[scale_export]]></attribute>
-    <value><![CDATA[0]]></value>
     <language/>
    </row>
    <row>
@@ -227,3 +150,4 @@
     <language/>
    </row>
    
+</rows>

@@ -44,6 +44,15 @@ program
                 jsonParser = new JsonToLss();
             } else if (options.type === "html") {
                 // implement new html parser
+            } else if (options.type === "json") {
+                fs.writeFile(options.output, output, (err) => {
+                    if (err) {
+                        console.error(`Error writing file: ${err.message}`);
+                        process.exit(1);
+                    }
+                    console.log(`Output written to ${options.output}`);
+                });
+                return;
             }
 
             output = jsonParser.parseData(output).then((output) => {

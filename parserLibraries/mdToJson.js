@@ -6,6 +6,7 @@ export class MarkdownToJson extends QuestionnaireParser {
 
         this.questionCount = 0;
         this.idCounter = 0;
+        this.answerCounter = 0;
 
         this.json = {
             title: "",
@@ -170,7 +171,7 @@ export class MarkdownToJson extends QuestionnaireParser {
             question.options.push({
                 value: option,
                 label: option,
-                id: `q${this.questionCount}a${question.options.length + 1}`,
+                id: `${++this.answerCounter}`,
                 code: `AO0${question.options.length + 1}`,
             });
             lines.splice(lines.indexOf(line) + 1, 1);
@@ -183,7 +184,7 @@ export class MarkdownToJson extends QuestionnaireParser {
             id: `${++this.questionCount}`,
             code: `GQ0${this.questionCount}`,
             label: label,
-            type: "datepicker",
+            type: "date",
             type_lss: "D",
             mandatory: "N",
             encrypted: "N",
@@ -199,7 +200,7 @@ export class MarkdownToJson extends QuestionnaireParser {
             id: `${++this.questionCount}`,
             code: `GQ0${this.questionCount}`,
             label: label,
-            type: "number",
+            type: "numberinput",
             type_lss: "N",
             mandatory: "N",
             encrypted: "N",

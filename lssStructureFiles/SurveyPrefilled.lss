@@ -191,7 +191,7 @@
   </fields>
   <rows>
     <row>
-    <sid><![CDATA[<surveyId>]]></sid>
+    <sid><![CDATA[surveyId]]></sid>
     <gsid><![CDATA[1]]></gsid>
     <admin><![CDATA[inherit]]></admin>
     <adminemail><![CDATA[inherit]]></adminemail>
@@ -199,7 +199,7 @@
     <format><![CDATA[I]]></format>
     <savetimings><![CDATA[I]]></savetimings>
     <template><![CDATA[inherit]]></template>
-    <language><![CDATA[<surveyLanguage>]]></language>
+    <language><![CDATA[surveyLanguage]]></language>
     <additional_languages/>
     <datestamp><![CDATA[I]]></datestamp>
     <usecookie><![CDATA[I]]></usecookie>
@@ -277,9 +277,9 @@
   </fields>
   <rows>
     <row>
-    <surveyls_survey_id><![CDATA[<surveyId>]]></surveyls_survey_id>
-    <surveyls_language><![CDATA[<surveyLanguage>]]></surveyls_language>
-    <surveyls_title><![CDATA[<surveyName>]]></surveyls_title>
+    <surveyls_survey_id><![CDATA[surveyId]]></surveyls_survey_id>
+    <surveyls_language><![CDATA[surveyLanguage]]></surveyls_language>
+    <surveyls_title><![CDATA[surveyName]]></surveyls_title>
     <surveyls_description/>
     <surveyls_welcometext/>
     <surveyls_endtext/>

@@ -1,0 +1,175 @@
+{
+  "title": "Questionnaire",
+  "language": "en",
+  "groups": [
+    {
+      "id": 1,
+      "code": "G01",
+      "questions": [
+        {
+          "id": "2",
+          "code": "GQ01",
+          "label": "Display Text!!",
+          "type": "displaytext",
+          "type_lss": "X",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 1,
+          "question_theme_name": "boilerplate"
+        },
+        {
+          "id": "3",
+          "code": "GQ02",
+          "label": "Please describe your experience.",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 2,
+          "options": [],
+          "type": "text",
+          "type_lss": "T",
+          "question_theme_name": "longfreetext"
+        },
+        {
+          "id": "4",
+          "code": "GQ03",
+          "label": "What is your favourite fruit?",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 3,
+          "options": [
+            {
+              "value": "Apple",
+              "label": "Apple",
+              "id": "1",
+              "code": "AO01"
+            },
+            {
+              "value": "Banana",
+              "label": "Banana",
+              "id": "2",
+              "code": "AO02"
+            },
+            {
+              "value": "Orange",
+              "label": "Orange",
+              "id": "3",
+              "code": "AO03"
+            }
+          ],
+          "type": "radio",
+          "type_lss": "L",
+          "question_theme_name": "listradio"
+        },
+        {
+          "id": "5",
+          "code": "GQ04",
+          "label": "Whats your favourite subject?",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 4,
+          "options": [
+            {
+              "value": "FDA",
+              "label": "FDA",
+              "id": "4",
+              "code": "AO01"
+            },
+            {
+              "value": "SE2",
+              "label": "SE2",
+              "id": "5",
+              "code": "AO02"
+            },
+            {
+              "value": "PR1",
+              "label": "PR1",
+              "id": "6",
+              "code": "AO03"
+            }
+          ],
+          "type": "checkbox",
+          "type_lss": "M",
+          "question_theme_name": "multiplechoice"
+        }
+      ],
+      "name": "Group 1"
+    },
+    {
+      "id": 6,
+      "code": "G02",
+      "questions": [
+        {
+          "id": "7",
+          "code": "GQ05",
+          "label": "How would you rate this service?",
+          "type": "rating",
+          "type_lss": "F",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 5,
+          "question_theme_name": "arrays/array",
+          "options": [
+            {
+              "min": 1,
+              "max": 5
+            }
+          ]
+        },
+        {
+          "id": "8",
+          "code": "GQ06",
+          "label": "How do you prefer to be contacted?",
+          "type": "dropdown",
+          "type_lss": "!",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 6,
+          "question_theme_name": "list_dropdown",
+          "options": [
+            {
+              "value": "Phone",
+              "label": "Phone",
+              "id": "7",
+              "code": "AO01"
+            },
+            {
+              "value": "Email",
+              "label": "Email",
+              "id": "8",
+              "code": "AO02"
+            },
+            {
+              "value": "None",
+              "label": "None",
+              "id": "9",
+              "code": "AO03"
+            }
+          ]
+        },
+        {
+          "id": "7",
+          "code": "GQ07",
+          "label": "Select a date",
+          "type": "date",
+          "type_lss": "D",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 7,
+          "question_theme_name": "date"
+        },
+        {
+          "id": "8",
+          "code": "GQ08",
+          "label": "Enter a number",
+          "type": "number",
+          "type_lss": "N",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 8,
+          "question_theme_name": "numerical"
+        }
+      ],
+      "name": "Group name idk"
+    }
+  ]
+}
