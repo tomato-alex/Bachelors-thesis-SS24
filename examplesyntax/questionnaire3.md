@@ -1,6 +1,6 @@
 # Questionnaire
 
-## Questions
+## Display Text!!
 
 ?:"Please describe your experience."
 
@@ -14,7 +14,7 @@
 [] SE2
 [] PR1
 
----
+--- Group name idk
 
 /:"How would you rate this service?" 1 5
 -> here number is how many rating options,
@@ -25,7 +25,6 @@
 () Phone
 () Email
 () None
--> this is for a dropdown
 
 #:"Select a date"
 
