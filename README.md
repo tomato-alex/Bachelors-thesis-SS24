@@ -8,25 +8,36 @@ This repository contains the code for the **Markdown for Questionnaires** projec
 
 ```bash
 node cli-questionnaire-md-parser.js
-Usage: [options] <inputFile>
+Usage: cli-questionnaire-md-parser [options] <inputFile>
+
+CLI tool for parsing custom Markdown for questionnaires
 
 Arguments:
   inputFile                  Markdown file to parse
 
 Options:
-  -V, --version              Output the version number
-  -o, --output <outputFile>  Specify the file to write the generated HTML to
+  -V, --version              output the version number
+  -o, --output <outputFile>  File to write the generated HTML to
+  -t, --type <outputType>    File Type to be written to
   -d, --display              Display the generated HTML in the console
-  -h, --help                 Display help for the command
+  --debug                    Display debug information
+  -h, --help                 Display this help message
 ```
 
 #### Example usage:
 
-`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.html -d`
+~~`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.html -d`~~
+`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.lss -t lss`
+
+Example files and syntax you can find in ./examplesyntax specifically in `q4.md` and `q5.md`
+
+You can then use the exported .lss file and import it straightly into LimeSurvey.
 
 ### GUI Tool usage
 
-To run the graphical tool, use the following command:
+~~To run the graphical tool, use the following command:~~
+
+**Currently the GUI only supports the old format, thus it is not suggested that it is used.**
 
 ```bash
 node servermockup.js
