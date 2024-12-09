@@ -27,7 +27,8 @@ Options:
 #### Example usage:
 
 ~~`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.html -d`~~
-`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.lss -t lss`
+`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.lss -t lss` > this will generate a lss file for LimeSurvey
+`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.json` > this will generate a json file structure
 
 Example files and syntax you can find in ./examplesyntax specifically in `q4.md` and `q5.md`
 

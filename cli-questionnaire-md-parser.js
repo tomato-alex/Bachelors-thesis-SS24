@@ -39,20 +39,18 @@ program
                 // Parsing for the old version of the markdown syntax.
                 // TODO implement json to Html with the new format();
                 jsonParser = new MarkdownToHtml();
+                console.warn("Generating a HTML file");
+                console.warn("This is only for the old format");
+                console.warn("Deprecated");
             } else if (options.type === "lss") {
                 // Parsing for the new version of the markdown syntax.
+                console.log("Generating a LSS file");
                 jsonParser = new JsonToLss();
             } else if (options.type === "html") {
                 // implement new html parser
             } else if (options.type === "json") {
-                fs.writeFile(options.output, output, (err) => {
-                    if (err) {
-                        console.error(`Error writing file: ${err.message}`);
-                        process.exit(1);
-                    }
-                    console.log(`Output written to ${options.output}`);
-                });
-                return;
+                // by default create a json file
+                console.log("Generating a JSON file");
             }
 
             output = jsonParser.parseData(output).then((output) => {

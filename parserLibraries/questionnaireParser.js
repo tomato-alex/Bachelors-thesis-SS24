@@ -3,7 +3,7 @@ export class QuestionnaireParser {
         this.output = "";
     }
 
-    parseData(data) {
+    async parseData(data) {
         this.output = data;
         return this.output;
     }

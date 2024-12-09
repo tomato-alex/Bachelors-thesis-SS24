@@ -8,7 +8,7 @@ export class MarkdownToHtml extends QuestionnaireParser {
         this.createParsers();
     }
 
-    parseData(data) {
+    async parseData(data) {
         // First, apply the custom questionnaire block parser
         // Then, parse the Markdown using the standard marked parser for basic Markdown
         let html = data;
