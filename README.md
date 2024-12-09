@@ -55,3 +55,4 @@ TODO v2:
 -   reimplement the frontend to be able to display the lss structure
 -   make required questions
 -   multiselect & rating implementation, currently not working, because of subquestions. Wtf are subquestions
+-   update readme with new parameters

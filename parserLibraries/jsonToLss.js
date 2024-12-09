@@ -44,7 +44,7 @@ export class JsonToLss extends QuestionnaireParser {
             this.output.surveys_languagesettings[0].rows[0].row[0].surveyls_language =
                 this.output.languages[0].language;
 
-            console.log("this.output", this.output);
+            //console.log("this.output", this.output);
             this.initializeRows();
 
             console.log("Prefilled structure parsed...");
@@ -55,9 +55,11 @@ export class JsonToLss extends QuestionnaireParser {
             JSON.stringify(this.output.document.groups[0].rows)
         );*/
 
-        this.output.surveys_languagesettings[0].rows[0].row.surveyls_title =
+        this.output.surveys_languagesettings[0].rows[0].row[0].surveyls_title =
             this.generateTitle(jsonData.title);
-        this.output.languages[0].language = this.generateLanguage(
+
+        //console.log("survey lang", this.output.languages[0].language);
+        this.output.languages[0].language[0] = this.generateLanguage(
             jsonData.language
         );
 
