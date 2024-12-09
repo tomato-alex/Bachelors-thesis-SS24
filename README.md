@@ -2,7 +2,7 @@
 
 ## Markdown for Questionnaires
 
-This repository contains the code for the **Markdown for Questionnaires** project. It includes a CLI program and a local Node.js server, which starts a graphical conversion tool for questionnaire markdown files.
+This repository contains the code for the **Markdown for Questionnaires** project. It includes a CLI program ~~and a local Node.js server, which starts a graphical conversion tool for questionnaire markdown files.~~ > the local Node.js server only works for the old syntax
 
 ### CLI Usage
 
@@ -27,7 +27,9 @@ Options:
 #### Example usage:
 
 ~~`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.html -d`~~
+
 `node cli-questionnaire-md-parser.js ../questionnaire.md -o output.lss -t lss` > this will generate a lss file for LimeSurvey
+
 `node cli-questionnaire-md-parser.js ../questionnaire.md -o output.json` > this will generate a json file structure
 
 Example files and syntax you can find in ./examplesyntax specifically in `q4.md` and `q5.md`
@@ -46,19 +48,18 @@ node servermockup.js
 
 ~~Then, access the webpage at `http://localhost:3000/`. The GUI allows for users to upload a Markdown file with questionnaire syntax and visualizes the output directly in the browser.~~
 
-~~TODO v1:
+~~TODO v1:~~
 
--   rename program name to be shorter
--   consider other program options
--   rename server executable
--   styles cleanup
--   index.html drag and drop and restyle
--   index.html copy and download html button
--   reformat the "architecture"
--   parser for different md syntax. Dont like the current one
--   dynamic script loading in webpage
--   multiselect doesnt work
-    ~~
+~~- rename program name to be shorter~~
+~~- consider other program options~~
+~~- rename server executable~~
+~~- styles cleanup~~
+~~- index.html drag and drop and restyle~~
+~~- index.html copy and download html button~~
+~~- reformat the "architecture"~~
+~~- parser for different md syntax. Dont like the current one~~
+~~- dynamic script loading in webpage~~
+~~- multiselect doesnt work~~
 
 TODO v2:
 
