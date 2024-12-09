@@ -181,7 +181,7 @@ export class MarkdownToJson extends QuestionnaireParser {
     parseDatepicker(line) {
         const label = this.parseLabel(line);
         const question = {
-            id: `${++this.questionCount}`,
+            id: `${++this.idCounter}`,
             code: `GQ0${this.questionCount}`,
             label: label,
             type: "date",
@@ -197,7 +197,7 @@ export class MarkdownToJson extends QuestionnaireParser {
     parseNumberInput(line) {
         const label = this.parseLabel(line);
         const question = {
-            id: `${++this.questionCount}`,
+            id: `${++this.idCounter}`,
             code: `GQ0${this.questionCount}`,
             label: label,
             type: "numberinput",

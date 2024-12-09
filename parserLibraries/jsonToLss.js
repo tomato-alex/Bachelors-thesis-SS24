@@ -16,99 +16,31 @@ export class JsonToLss extends QuestionnaireParser {
         //this.init();
     }
 
-    async init() {
-        try {
-            this.output = await this.generateInitialStructure();
-            // Here in the main structure there are
-            // some vars that need to be set
-            // like <surveyId>
-            // <surveyLanguage>
-            // and <surveyName>. Otherwise the program does not get imported
-            // also multi select and rating dont work because they use subquestions??
-            // need to figure this out
-        } catch (err) {
-            console.error("Error initializing structure:", err);
-        }
-    }
     async parseData(json) {
-        const jsonData = JSON.parse(json);
         if (!this.output) {
             // Await the structure generation before proceeding
             this.structureFiles = await this.generateInitialStructure();
             this.output = this.structureFiles.SurveyPrefilled.document;
-            this.output.surveys[0].rows[0].row[0].sid = this.surveyId;
-            this.output.surveys[0].rows[0].row[0].language =
-                this.output.languages[0].language;
-            this.output.surveys_languagesettings[0].rows[0].row[0].sid =
-                this.surveyId;
-            this.output.surveys_languagesettings[0].rows[0].row[0].surveyls_language =
-                this.output.languages[0].language;
-
-            //console.log("this.output", this.output);
-            this.initializeRows();
 
             console.log("Prefilled structure parsed...");
         }
 
-        /*console.log(
-            "survey title",
-            JSON.stringify(this.output.document.groups[0].rows)
-        );*/
-
-        this.output.surveys_languagesettings[0].rows[0].row[0].surveyls_title =
-            this.generateTitle(jsonData.title);
-
-        //console.log("survey lang", this.output.languages[0].language);
-        this.output.languages[0].language[0] = this.generateLanguage(
-            jsonData.language
-        );
+        const jsonData = JSON.parse(json);
+        this.initializeRows(jsonData);
 
         jsonData.groups?.forEach((group) => {
             this.questionOrder = 1;
-            this.output.groups[0].rows[0].row.push(this.generateGroup(group));
-
-            this.output.group_l10ns[0].rows[0].row.push(
-                this.generateGroupL10ns(group)
-            );
-            console.log("Generated group...");
-            this.groupOrder++;
+            this.generateGroupMetadata(group);
 
             group.questions.forEach((question) => {
-                this.output.questions[0].rows[0].row.push(
-                    this.generateQuestion(
-                        question,
-                        group.id,
-                        this.questionOrder
-                    )
-                );
-                this.output.question_l10ns[0].rows[0].row.push(
-                    this.generateQuestionL10ns(question)
-                );
-
-                let attributes = this.generateQuestionAttributes(
-                    question,
-                    this.structureFiles[question.type]
-                )?.row;
-
-                if (attributes != undefined) {
-                    this.output.question_attributes[0].rows[0].row.push(
-                        ...attributes
-                    );
-                }
-
-                this.questionOrder++;
+                this.generateQuestionMetadata(question, group.id);
 
                 if (
                     question.options != [] &&
                     this.questionsWithAnswers.includes(question.type)
                 ) {
                     question.options.forEach((option) => {
-                        this.output.answers[0].rows[0].row.push(
-                            this.generateAnswers(option, question)
-                        );
-                        this.output.answer_l10ns[0].rows[0].row.push(
-                            this.generateAnswerL10ns(option, question)
-                        );
+                        this.generateAnswerMetadata(option, question);
                     });
                 }
             });
@@ -119,27 +51,77 @@ export class JsonToLss extends QuestionnaireParser {
         console.log("Generated structure...");
 
         return this.cleanXml(this.buildXml({ document: this.output }));
-        console.log("returing jsonified output");
-        return JSON.stringify(this.output);
-        return this.output;
     }
 
     exportData() {
         return this.output;
     }
 
-    initializeRows() {
+    initializeRows(jsonData) {
+        this.output.surveys[0].rows[0].row[0].sid = this.surveyId;
+        this.output.surveys[0].rows[0].row[0].language = this.generateLanguage(
+            jsonData.language
+        );
+        this.output.surveys_languagesettings[0].rows[0].row[0].sid =
+            this.surveyId;
+        this.output.surveys_languagesettings[0].rows[0].row[0].surveyls_language =
+            this.output.languages[0].language;
+
+        this.output.surveys_languagesettings[0].rows[0].row[0].surveyls_title =
+            this.generateTitle(jsonData.title);
+
+        this.output.languages[0].language[0] = this.generateLanguage(
+            jsonData.language
+        );
+
         this.output.answers[0].rows = [{ row: [] }];
         this.output.answer_l10ns[0].rows = [{ row: [] }];
         this.output.groups[0].rows = [{ row: [] }];
         this.output.group_l10ns[0].rows = [{ row: [] }];
         this.output.questions[0].rows = [{ row: [] }];
         this.output.question_l10ns[0].rows = [{ row: [] }];
-        //this.output.subquestions[0].rows = [{ row: [] }];
+        //this.output.subquestions[0].rows = [{ row: [] }]; -> not implemented yet
         this.output.question_attributes[0].rows = [{ row: [] }];
     }
 
-    attachToSkeleton(xmlToBeAttached, placeToAttach) {}
+    generateGroupMetadata(group) {
+        this.output.groups[0].rows[0].row.push(this.generateGroup(group));
+
+        this.output.group_l10ns[0].rows[0].row.push(
+            this.generateGroupL10ns(group)
+        );
+        console.log("Generated group...");
+        this.groupOrder++;
+    }
+
+    generateQuestionMetadata(question, groupId) {
+        this.output.questions[0].rows[0].row.push(
+            this.generateQuestion(question, groupId, this.questionOrder)
+        );
+        this.output.question_l10ns[0].rows[0].row.push(
+            this.generateQuestionL10ns(question)
+        );
+
+        let attributes = this.generateQuestionAttributes(
+            question,
+            this.structureFiles[question.type]
+        )?.row;
+
+        if (attributes != undefined) {
+            this.output.question_attributes[0].rows[0].row.push(...attributes);
+        }
+
+        this.questionOrder++;
+    }
+
+    generateAnswerMetadata(answer, question) {
+        this.output.answers[0].rows[0].row.push(
+            this.generateAnswers(answer, question)
+        );
+        this.output.answer_l10ns[0].rows[0].row.push(
+            this.generateAnswerL10ns(answer, question)
+        );
+    }
 
     buildXml(object) {
         const builder = new xml2js.Builder();
