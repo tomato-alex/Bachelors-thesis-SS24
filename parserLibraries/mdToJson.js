@@ -100,7 +100,13 @@ export class MarkdownToJson extends QuestionnaireParser {
             question.type = "checkbox";
             question.type_lss = "M";
             question.question_theme_name = "multiplechoice";
-            this.parseOptions(question, line, lines, "[] ");
+            this.parseOptionsMultiSelect(
+                this.currentGroup,
+                question,
+                line,
+                lines,
+                "[] "
+            );
         } else {
             question.type = "text";
             question.type_lss = "T";
@@ -160,6 +166,28 @@ export class MarkdownToJson extends QuestionnaireParser {
         this.parseOptions(question, line, lines, "() ");
 
         this.currentGroup.questions.push(question);
+    }
+
+    parseOptionsMultiSelect(group, question, line, lines, optionType) {
+        let orderCounter = 0;
+        while (lines[lines.indexOf(line) + 1].startsWith(optionType)) {
+            const option = lines[lines.indexOf(line) + 1]
+                .substring(3)
+                .replace(/\r/g, "");
+            group.subquestions.push({
+                qid: `${++this.idCounter}`,
+                parent_qid: question.id,
+                type_lss: "T",
+                code: `SQO0${orderCounter + 1}`,
+                other: "N",
+                encrypted: "N",
+                question_order: orderCounter++,
+                value: option,
+                label: option,
+            });
+
+            lines.splice(lines.indexOf(line) + 1, 1);
+        }
     }
 
     parseOptions(question, line, lines, optionType) {
@@ -231,6 +259,7 @@ export class MarkdownToJson extends QuestionnaireParser {
             id: ++this.idCounter,
             code: `G0${this.json.groups.length + 1}`,
             questions: [],
+            subquestions: [],
             name: name,
         };
     }

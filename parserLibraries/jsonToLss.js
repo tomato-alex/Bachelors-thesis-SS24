@@ -45,6 +45,10 @@ export class JsonToLss extends QuestionnaireParser {
                 }
             });
 
+            group.subquestions.forEach((subquestion) => {
+                this.generateSubquestionMetadata(subquestion, group.id);
+            });
+
             console.log("Generated questions...");
         });
 
@@ -80,7 +84,7 @@ export class JsonToLss extends QuestionnaireParser {
         this.output.group_l10ns[0].rows = [{ row: [] }];
         this.output.questions[0].rows = [{ row: [] }];
         this.output.question_l10ns[0].rows = [{ row: [] }];
-        //this.output.subquestions[0].rows = [{ row: [] }]; -> not implemented yet
+        this.output.subquestions[0].rows = [{ row: [] }]; //-> not implemented yet
         this.output.question_attributes[0].rows = [{ row: [] }];
     }
 
@@ -112,6 +116,16 @@ export class JsonToLss extends QuestionnaireParser {
         }
 
         this.questionOrder++;
+    }
+
+    generateSubquestionMetadata(subquestion, groupId) {
+        this.output.subquestions[0].rows[0].row.push(
+            this.generateSubquestion(subquestion, groupId)
+        );
+
+        this.output.question_l10ns[0].rows[0].row.push(
+            this.generateQuestionL10ns(subquestion)
+        );
     }
 
     generateAnswerMetadata(answer, question) {
@@ -212,17 +226,19 @@ export class JsonToLss extends QuestionnaireParser {
         return row;
     }
 
-    generateSubquestions(question, groupId, questionOrder) {
+    generateSubquestion(subquestion, groupId) {
         let row = {
-            qid: [{ _: "<![CDATA[" + question.id + "]]>" }],
-            parent_qid: [{ _: "<![CDATA[" + question.parent_id + "]]>" }],
+            qid: [{ _: "<![CDATA[" + subquestion.qid + "]]>" }],
+            parent_qid: [{ _: "<![CDATA[" + subquestion.parent_qid + "]]>" }],
             sid: [{ _: "<![CDATA[" + this.surveyId + "]]>" }],
             gid: [{ _: "<![CDATA[" + groupId + "]]>" }],
-            type: [{ _: "<![CDATA[" + question.type_lss + "]]>" }],
-            title: [{ _: "<![CDATA[" + question.code + "]]>" }],
+            type: [{ _: "<![CDATA[" + subquestion.type_lss + "]]>" }],
+            title: [{ _: "<![CDATA[" + subquestion.code + "]]>" }],
             other: [{ _: "<![CDATA[N]]>" }],
-            encrypted: [{ _: "<![CDATA[" + question.encrypted + "]]>" }],
-            question_order: { _: "<![CDATA[" + questionOrder + "]]>" },
+            encrypted: [{ _: "<![CDATA[" + subquestion.encrypted + "]]>" }],
+            question_order: {
+                _: "<![CDATA[" + subquestion.question_order + "]]>",
+            },
             scale_id: [{ _: "<![CDATA[0]]>" }],
             same_default: [{ _: "<![CDATA[0]]>" }],
             relevance: [{ _: "<![CDATA[1]]>" }],
@@ -235,8 +251,8 @@ export class JsonToLss extends QuestionnaireParser {
 
     generateQuestionL10ns(question) {
         let row = {
-            id: [{ _: "<![CDATA[" + question.id + "]]>" }],
-            qid: [{ _: "<![CDATA[" + question.id + "]]>" }],
+            id: [{ _: "<![CDATA[" + (question?.id || question?.qid) + "]]>" }],
+            qid: [{ _: "<![CDATA[" + (question?.id || question?.qid) + "]]>" }],
             question: [{ _: "<![CDATA[" + question.label + "]]>" }],
             // TODO implement help syntax help: [{ _: "<![CDATA[" + question.help + "]]>" }],
             help: [{ _: "" }],
@@ -262,14 +278,6 @@ export class JsonToLss extends QuestionnaireParser {
         let rows = structuredClone(type.rows.row);
 
         rows.forEach((row) => {
-            const value = row.value[0];
-            const attribute = row.attribute[0];
-            if (question.type == "checkbox") {
-                console.log(question.type, JSON.stringify(row));
-                console.log("row value", value);
-                console.log("row attribute", attribute);
-            }
-
             row.qid = [{ _: "<![CDATA[" + question.id + "]]>" }];
 
             if (row.language != "") {
@@ -283,7 +291,6 @@ export class JsonToLss extends QuestionnaireParser {
                 ];
             }
             if (row.value != "") {
-                if (question.type == "checkbox") console.log("r2", row.value);
                 row.value = [{ _: "<![CDATA[" + row.value + "]]>" }];
             }
             row.attribute = [{ _: "<![CDATA[" + row.attribute + "]]>" }];
@@ -305,7 +312,7 @@ export class JsonToLss extends QuestionnaireParser {
         return row;
     }
 
-    generateAnswerL10ns(answer, question) {
+    generateAnswerL10ns(answer) {
         let row = {
             id: [{ _: "<![CDATA[" + answer.id + "]]>" }],
             aid: [{ _: "<![CDATA[" + answer.id + "]]>" }],
