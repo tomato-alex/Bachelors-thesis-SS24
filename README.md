@@ -63,9 +63,9 @@ node servermockup.js
 
 TODO v2:
 
--   Implement a Json to LSS formatter
--   Add inheritance and use the Strategy pattern to decide which parser to use.
--   reimplement the frontend to be able to display the lss structure
--   make required questions
--   multiselect & rating implementation, currently not working, because of subquestions. Wtf are subquestions
--   update readme with new parameters
+-   Implement a Json to LSS formatter -> In Progress (80% feature support)
+-   Add inheritance and use the Strategy pattern to decide which parser to use. -> In Progress (html parser needed)
+-   reimplement the frontend to be able to display the lss structure -> TBD
+-   make required questions -> Analysis
+-   support markdown in question titles (bold, underline, etc) -> Analysis
+-   ~~multiselect & ~~rating implementation
