@@ -2,7 +2,13 @@
 
 ## Markdown for Questionnaires
 
-This repository contains the code for the **Markdown for Questionnaires** project. It includes a CLI program ~~and a local Node.js server, which starts a graphical conversion tool for questionnaire markdown files.~~ > the local Node.js server only works for the old syntax
+This repository contains the code for the **Markdown for Questionnaires** project. It includes a CLI program and a local Node.js server, which starts a graphical conversion tool for questionnaire markdown files.
+
+### Requirements
+
+```bash
+node
+```
 
 ### CLI Usage
 
@@ -26,8 +32,6 @@ Options:
 
 #### Example usage:
 
-~~`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.html -d`~~
-
 `node cli-questionnaire-md-parser.js ../questionnaire.md -o output.lss -t lss` > this will generate a lss file for LimeSurvey
 
 `node cli-questionnaire-md-parser.js ../questionnaire.md -o output.json` > this will generate a json file structure
@@ -48,9 +52,11 @@ Then, access the webpage at `http://localhost:3000/`. The GUI allows for users t
 
 TODO v2:
 
-| Implement a Json to LSS formatter | In Progress (80% minimal feature support) |
-| Add inheritance and use the Strategy pattern to decide which parser to use. | In Progress (html parser needed) |
-| ~~reimplement the frontend to be able to~~ display the lss structure | In Progress (html parser needed) |
-| Implement syntax for required questions | Analysis |
-| support markdown in question titles (bold, underline, etc) | Analysis
-| ~~multiselect & ~~rating implementation | Analysis |
+| Task                                                                        | Status                                    |
+| --------------------------------------------------------------------------- | ----------------------------------------- |
+| Implement a Json to LSS formatter                                           | In Progress (80% minimal feature support) |
+| Add inheritance and use the Strategy pattern to decide which parser to use. | In Progress (html parser needed)          |
+| ~~reimplement the frontend to be able to~~ display the lss structure        | In Progress (html parser needed)          |
+| Implement syntax for required questions                                     | Analysis                                  |
+| support markdown in question titles (bold, underline, etc)                  | Analysis                                  |
+| rating implementation                                                       | Analysis                                  |
