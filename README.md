@@ -38,34 +38,19 @@ You can then use the exported .lss file and import it straightly into LimeSurvey
 
 ### GUI Tool usage
 
-~~To run the graphical tool, use the following command:~~
-
-**Currently the GUI only supports the old format, thus it is not suggested that it is used.**
+To run the graphical tool, use the following command:
 
 ```bash
 node servermockup.js
 ```
 
-~~Then, access the webpage at `http://localhost:3000/`. The GUI allows for users to upload a Markdown file with questionnaire syntax and visualizes the output directly in the browser.~~
-
-~~TODO v1:~~
-
-~~- rename program name to be shorter~~
-~~- consider other program options~~
-~~- rename server executable~~
-~~- styles cleanup~~
-~~- index.html drag and drop and restyle~~
-~~- index.html copy and download html button~~
-~~- reformat the "architecture"~~
-~~- parser for different md syntax. Dont like the current one~~
-~~- dynamic script loading in webpage~~
-~~- multiselect doesnt work~~
+Then, access the webpage at `http://localhost:3000/`. The GUI allows for users to upload a Markdown file with questionnaire syntax and visualizes the output directly in the browser.
 
 TODO v2:
 
--   Implement a Json to LSS formatter -> In Progress (80% feature support)
--   Add inheritance and use the Strategy pattern to decide which parser to use. -> In Progress (html parser needed)
--   reimplement the frontend to be able to display the lss structure -> TBD
--   make required questions -> Analysis
--   support markdown in question titles (bold, underline, etc) -> Analysis
--   ~~multiselect & ~~rating implementation
+| Implement a Json to LSS formatter | In Progress (80% minimal feature support) |
+| Add inheritance and use the Strategy pattern to decide which parser to use. | In Progress (html parser needed) |
+| ~~reimplement the frontend to be able to~~ display the lss structure | In Progress (html parser needed) |
+| Implement syntax for required questions | Analysis |
+| support markdown in question titles (bold, underline, etc) | Analysis
+| ~~multiselect & ~~rating implementation | Analysis |
