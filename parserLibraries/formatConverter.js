@@ -1,4 +1,4 @@
-export class QuestionnaireParser {
+export class FormatConverter {
     constructor() {
         this.output = "";
     }

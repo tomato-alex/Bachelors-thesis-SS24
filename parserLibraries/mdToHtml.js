@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { marked } from "marked";
-import { QuestionnaireParser } from "./questionnaireParser.js";
+import { FormatConverter } from "./formatConverter.js";
 
-export class MarkdownToHtml extends QuestionnaireParser {
+export class MarkdownToHtml extends FormatConverter {
     constructor() {
         super();
         this.createParsers();

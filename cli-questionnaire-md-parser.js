@@ -1,9 +1,6 @@
 import fs from "fs";
 import { program } from "commander";
-import { MarkdownToHtml } from "./parserLibraries/mdToHtml.js";
-import { MarkdownToJson } from "./parserLibraries/mdToJson.js";
-import { JsonToLss } from "./parserLibraries/jsonToLss.js";
-import { QuestionnaireParser } from "./parserLibraries/questionnaireParser.js";
+import { QuestionnaireParser } from "./questionnaireParser.js";
 
 // Command-line interface definition
 program
@@ -15,66 +12,40 @@ program
     .option("-t, --type <outputType>", "File Type to be written to")
     .option("-d, --display", "Display the generated HTML in the console")
     .option("--debug", "Display debug information")
-    .action((inputFile, options) => {
-        fs.readFile(inputFile, "utf8", (err, data) => {
-            if (err) {
-                console.error(`Error reading file: ${err.message}`);
-                process.exit(1);
-            }
-
+    .action(async (inputFile, options) => {
+        try {
+            const data = await fs.promises.readFile(inputFile, "utf8");
             if (!inputFile.endsWith(".md")) {
                 console.error(`Error: File must be a .md file`);
                 process.exit(1);
             }
 
+            const questionnaireParser = new QuestionnaireParser();
+            let output = await questionnaireParser.parseMarkdown(
+                data,
+                options.type
+            );
             // Use the new MD to Json parser to first get the initial structure
             // Why json? To add more flexability when transforming into different formats like html, lss, xml or others
-            const questionnaireParser = new MarkdownToJson();
-            questionnaireParser.parseData(data);
-            const markdownToJson = questionnaireParser.exportData();
-            let output = markdownToJson;
 
-            let jsonParser = new QuestionnaireParser();
-            if (options.type === "html/depr") {
-                // Parsing for the old version of the markdown syntax.
-                // TODO implement json to Html with the new format();
-                jsonParser = new MarkdownToHtml();
-                console.warn("Generating a HTML file");
-                console.warn("This is only for the old format");
-                console.warn("Deprecated");
-            } else if (options.type === "lss") {
-                // Parsing for the new version of the markdown syntax.
-                console.log("Generating a LSS file");
-                jsonParser = new JsonToLss();
-            } else if (options.type === "html") {
-                // implement new html parser
-            } else if (options.type === "json") {
-                // by default create a json file
-                console.log("Generating a JSON file");
+            if (options.debug) {
+                console.log("Jsonified Markdown > \n" + output);
             }
 
-            output = jsonParser.parseData(output).then((output) => {
-                if (options.debug) {
-                    console.log("Jsonified Markdown > \n" + markdownToJson);
-                }
+            if (options.display) {
+                console.log("Entire output > \n" + output);
+            }
 
-                if (options.display) {
-                    console.log("Entire output > \n" + output);
-                }
-
-                if (options.output) {
-                    fs.writeFile(options.output, output, (err) => {
-                        if (err) {
-                            console.error(`Error writing file: ${err.message}`);
-                            process.exit(1);
-                        }
-                        console.log(`Output written to ${options.output}`);
-                    });
-                } else {
-                    console.log(output);
-                }
-            });
-        });
+            if (options.output) {
+                fs.promises.writeFile(options.output, output);
+                console.log(`Output written to ${options.output}`);
+            } else {
+                console.log(output);
+            }
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+            process.exit(1);
+        }
     });
 
 program.parse(process.argv);

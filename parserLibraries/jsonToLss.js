@@ -1,9 +1,9 @@
-import { QuestionnaireParser } from "./questionnaireParser.js";
+import { FormatConverter } from "./formatConverter.js";
 import xml2js from "xml2js";
 import { promises as fs } from "fs";
 import path from "path";
 
-export class JsonToLss extends QuestionnaireParser {
+export class JsonToLss extends FormatConverter {
     constructor() {
         super();
         this.groupCount = 1;
@@ -25,7 +25,7 @@ export class JsonToLss extends QuestionnaireParser {
             console.log("Prefilled structure parsed...");
         }
 
-        const jsonData = JSON.parse(json);
+        const jsonData = JSON.parse(JSON.stringify(json));
         this.initializeRows(jsonData);
 
         jsonData.groups?.forEach((group) => {
@@ -86,6 +86,8 @@ export class JsonToLss extends QuestionnaireParser {
         this.output.question_l10ns[0].rows = [{ row: [] }];
         this.output.subquestions[0].rows = [{ row: [] }]; //-> not implemented yet
         this.output.question_attributes[0].rows = [{ row: [] }];
+
+        console.log("Initialized structure...");
     }
 
     generateGroupMetadata(group) {

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Markdown Questionnaire</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script type="text/javascript" src="scripts.js"></script>
+    </head>
+    <body>
+        <h1>Markdown Questionnaire Parser</h1>
+        <form id="upload-form">
+            <label for="markdown-file">Upload your Markdown file:</label>
+            <input
+                type="file"
+                id="markdown-file"
+                name="markdown-file"
+                accept=".md"
+            />
+            <button type="submit">Upload</button>
+        </form>
+
+        <div class="container">
+            <!-- Rendered HTML Section -->
+            <div class="output-section">
+                <h2>Rendered Output</h2>
+                <div id="rendered-output" class="html-output">
+                    <form id="rendered-form"></form>
+                </div>
+            </div>
+
+            <!-- HTML Code Section -->
+            <div class="output-section">
+                <h2>HTML Code</h2>
+                <div id="html-code" class="html-output">
+                    <pre id="html-code-pre"></pre>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

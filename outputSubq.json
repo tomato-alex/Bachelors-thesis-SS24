@@ -1,0 +1,186 @@
+{
+  "title": "Title",
+  "language": "en",
+  "groups": [
+    {
+      "id": 1,
+      "code": "G01",
+      "questions": [
+        {
+          "id": "2",
+          "code": "GQ00",
+          "label": "Test Question Number",
+          "type": "numberinput",
+          "type_lss": "N",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 0,
+          "question_theme_name": "numerical"
+        },
+        {
+          "id": "3",
+          "code": "GQ01",
+          "label": "A first example question. Please answer this question:",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 1,
+          "options": [],
+          "type": "text",
+          "type_lss": "T",
+          "question_theme_name": "longfreetext"
+        },
+        {
+          "id": "4",
+          "code": "GQ02",
+          "label": "Test Question Dropdown",
+          "type": "dropdown",
+          "type_lss": "!",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 2,
+          "question_theme_name": "list_dropdown",
+          "options": []
+        },
+        {
+          "id": "5",
+          "code": "GQ03",
+          "label": "Test Question Radio",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 3,
+          "options": [
+            {
+              "value": "Test Question Radio 1",
+              "label": "Test Question Radio 1",
+              "id": "1",
+              "code": "AO01"
+            },
+            {
+              "value": "Test Question Radio 2",
+              "label": "Test Question Radio 2",
+              "id": "2",
+              "code": "AO02"
+            }
+          ],
+          "type": "radio",
+          "type_lss": "L",
+          "question_theme_name": "listradio"
+        },
+        {
+          "id": "6",
+          "code": "GQ04",
+          "label": "Test Question Multiple Choice",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 4,
+          "options": [],
+          "type": "checkbox",
+          "type_lss": "M",
+          "question_theme_name": "multiplechoice"
+        },
+        {
+          "id": "9",
+          "code": "GQ04",
+          "label": "Test Question Datepicker",
+          "type": "date",
+          "type_lss": "D",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 4,
+          "question_theme_name": "date"
+        }
+      ],
+      "subquestions": [
+        {
+          "qid": "7",
+          "parent_qid": "6",
+          "type": "T",
+          "code": "SQO01",
+          "other": "N",
+          "encrypted": "N",
+          "question_order": 0,
+          "value": "Test Question MC 1",
+          "label": "Test Question MC 1"
+        },
+        {
+          "qid": "8",
+          "parent_qid": "6",
+          "type": "T",
+          "code": "SQO02",
+          "other": "N",
+          "encrypted": "N",
+          "question_order": 1,
+          "value": "Test Question MC 2",
+          "label": "Test Question MC 2"
+        }
+      ],
+      "name": "Group 1"
+    },
+    {
+      "id": 10,
+      "code": "G02",
+      "questions": [
+        {
+          "id": "11",
+          "code": "GQ05",
+          "label": "This is a very long text display. Gee",
+          "type": "displaytext",
+          "type_lss": "X",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 5,
+          "question_theme_name": "boilerplate"
+        },
+        {
+          "id": "12",
+          "code": "GQ06",
+          "label": "Random question idk",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 6,
+          "options": [],
+          "type": "text",
+          "type_lss": "T",
+          "question_theme_name": "longfreetext"
+        },
+        {
+          "id": "13",
+          "code": "GQ07",
+          "label": "MC q2",
+          "mandatory": "N",
+          "encrypted": "N",
+          "question_order": 7,
+          "options": [],
+          "type": "checkbox",
+          "type_lss": "M",
+          "question_theme_name": "multiplechoice"
+        }
+      ],
+      "subquestions": [
+        {
+          "qid": "14",
+          "parent_qid": "13",
+          "type": "T",
+          "code": "SQO01",
+          "other": "N",
+          "encrypted": "N",
+          "question_order": 0,
+          "value": "MC a1",
+          "label": "MC a1"
+        },
+        {
+          "qid": "15",
+          "parent_qid": "13",
+          "type": "T",
+          "code": "SQO02",
+          "other": "N",
+          "encrypted": "N",
+          "question_order": 1,
+          "value": "MC a2",
+          "label": "MC a2"
+        }
+      ],
+      "name": "Group 2"
+    }
+  ]
+}

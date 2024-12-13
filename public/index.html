@@ -3,193 +3,119 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Markdown Questionnaire</title>
+        <title>Markdown to LSS Converter</title>
         <link rel="stylesheet" href="styles.css" />
-        <script type="text/javascript" src="scripts.js"></script>
-        <!--style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                height: 100vh;
-                background-color: #f4f4f9;
-            }
-
-            h1 {
-                margin-top: 20px;
-                text-align: center;
-            }
-
-            #upload-form {
-                margin-bottom: 20px;
-            }
-
-            #upload-form label {
-                font-size: 1.2em;
-                margin-right: 10px;
-            }
-
-            #upload-form input {
-                margin-right: 10px;
-            }
-
-            #upload-form button {
-                font-size: 1.2em;
-                cursor: pointer;
-            }
-
-            .container {
-                display: flex;
-                width: 90%;
-                height: 80vh;
-                justify-content: space-between;
-                gap: 20px;
-            }
-
-            .output-section {
-                flex: 1;
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                overflow-y: auto;
-            }
-
-            .html-output {
-                margin-bottom: 20px;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 10px;
-                height: 100%;
-                overflow-y: scroll;
-                background-color: #f9f9f9;
-            }
-
-            .html-output pre {
-                margin: 0;
-                background-color: #f9f9f9;
-                font-family: "Courier New", Courier, monospace;
-                white-space: pre-wrap;
-                word-wrap: break-word;
-            }
-
-            .button-container {
-                display: flex;
-                justify-content: flex-end;
-            }
-
-            button[type="submit"] {
-                padding: 10px 20px;
-                font-size: 1.1em;
-                background-color: #007bff;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            button[type="submit"]:hover {
-                background-color: #0056b3;
-            }
-        </style-->
     </head>
     <body>
-        <h1>Markdown Questionnaire Parser</h1>
-        <form id="upload-form">
-            <label for="markdown-file">Upload your Markdown file:</label>
-            <input
-                type="file"
-                id="markdown-file"
-                name="markdown-file"
-                accept=".md"
-            />
-            <button type="submit">Upload</button>
-        </form>
-
-        <div class="container">
-            <!-- Rendered HTML Section -->
-            <div class="output-section">
-                <h2>Rendered Output</h2>
-                <div id="rendered-output" class="html-output">
-                    <form id="rendered-form"></form>
+        <h1>Markdown to LimeSurvey Converter</h1>
+        <div class="columnholder">
+            <div class="container">
+                <div id="dropzone">
+                    <div class="dropzone-content">
+                        <h2>&plus;</h2>
+                        <input
+                            type="file"
+                            id="file-input"
+                            style="display: none"
+                            accept=".md"
+                        />
+                    </div>
                 </div>
+
+                <textarea
+                    class="markdown-input"
+                    id="markdown-input"
+                    placeholder="Type markdown here..."
+                ></textarea>
+                <button id="convert-button">&DownArrow; LSS</button>
             </div>
-
-            <!-- HTML Code Section -->
-            <div class="output-section">
-                <h2>HTML Code</h2>
-                <div id="html-code" class="html-output">
-                    <pre id="html-code-pre"></pre>
-                </div>
+            <div class="container">
+                <textarea
+                    id="lss-output"
+                    placeholder="LSS output will appear here..."
+                ></textarea>
+                <p>some placeholder</p>
             </div>
         </div>
 
-        <!--script>
+        <script>
+            const markdownInput = document.getElementById("markdown-input");
+            const dropzone = document.getElementById("dropzone");
+            const fileInput = document.getElementById("file-input");
+
+            // Update HTML preview as you type
+            markdownInput.addEventListener("input", () => {
+                const markdownText = markdownInput.value;
+            });
+
+            // Handle markdown file drop
+            dropzone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropzone.style.borderColor = "green";
+            });
+
+            dropzone.addEventListener("dragleave", () => {
+                dropzone.style.borderColor = "#ccc";
+            });
+
+            dropzone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropzone.style.borderColor = "#ccc";
+
+                const file = e.dataTransfer.files[0];
+                if (file && file.name.endsWith(".md")) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        markdownInput.value = e.target.result;
+                        markdownInput.dispatchEvent(new Event("input"));
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            dropzone.addEventListener("click", uploadFile);
+
+            function uploadFile() {
+                fileInput.click();
+            }
+
+            fileInput.addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file && file.name.endsWith(".md")) {
+                    // Handle the uploaded file here
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        markdownInput.value = event.target.result;
+                        markdownInput.dispatchEvent(new Event("input"));
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            // Convert to LSS and download
             document
-                .getElementById("upload-form")
-                .addEventListener("submit", async (event) => {
-                    event.preventDefault();
+                .getElementById("convert-button")
+                .addEventListener("click", () => {
+                    const markdownText = markdownInput.value;
 
-                    const fileInput = document.getElementById("markdown-file");
-                    const file = fileInput.files[0];
-
-                    if (!file) {
-                        alert("Please upload a markdown file.");
-                        return;
-                    }
-
-                    const formData = new FormData();
-                    formData.append("markdown-file", file);
-
-                    // Send the file to the server
-                    const response = await fetch("/parse", {
+                    fetch("/parse", {
                         method: "POST",
-                        body: formData,
-                    });
-
-                    const result = await response.text();
-
-                    // Update rendered HTML section
-                    document.getElementById("rendered-form").innerHTML = result;
-
-                    // Optionally, append a submit button
-                    document.getElementById("rendered-form").innerHTML +=
-                        '<button type="submit" value="Submit">Submit</button>';
-
-                    // Update raw HTML code section
-                    document.getElementById("html-code-pre").textContent =
-                        result;
-
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(result, "text/html");
-                    const scripts = doc.querySelectorAll("script");
-
-                    scripts.forEach((script) => {
-                        console.log("script" + script.textContent);
-                        const scriptTag = document.createElement("script");
-                        scriptTag.textContent = script.textContent;
-                        document.body.appendChild(scriptTag);
-                    });
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ markdown: markdownText }),
+                    })
+                        .then((response) => response.blob())
+                        .then((blob) => {
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement("a");
+                            a.href = url;
+                            a.download = "survey.lss";
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            // uncomment when download needed
+                        })
+                        .catch((error) => console.error("Error:", error));
                 });
-
-            document
-                .getElementById("rendered-form")
-                .addEventListener("submit", function (event) {
-                    event.preventDefault(); // Prevent the default form submission
-
-                    const formData = new FormData(event.target);
-
-                    // Log each form entry
-                    console.log(JSON.stringify(event.target.value));
-                    // each input needs defined name and value pair, where dropdowns need to have the name in select and value in options
-                    for (let [name, value] of formData.entries()) {
-                        console.log(name, ":", value);
-                    }
-                });
-        </script-->
+        </script>
     </body>
 </html>

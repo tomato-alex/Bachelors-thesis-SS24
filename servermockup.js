@@ -1,9 +1,7 @@
 import express from "express";
-import multer from "multer";
 import fs from "fs";
 import path from "path";
-import { parseMarkdownToHTML } from "./custom-questionnaire-syntax-parser.js";
-import { marked } from "marked";
+import { QuestionnaireParser } from "./questionnaireParser.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -11,7 +9,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const upload = multer({ dest: "uploads/" });
+
+// Use json in request bodies
+app.use(express.json());
 
 // Serve the frontend HTML file from 'public' folder
 app.use(express.static(path.join(__dirname, "public")));
@@ -22,26 +22,23 @@ app.get("/", (req, res) => {
 });
 
 // Endpoint to handle the file upload and parsing
-app.post("/parse", upload.single("markdown-file"), (req, res) => {
-    const filePath = req.file.path;
+app.post("/parse", async (req, res) => {
+    const markdown = req.body.markdown;
 
-    fs.readFile(filePath, "utf8", (err, data) => {
+    const questionnaireParser = new QuestionnaireParser();
+    const lssFile = await questionnaireParser.parseMarkdown(markdown, "lss");
+
+    // Convert the markdown to an .lss file
+
+    const filePath = path.join(__dirname, "survey.lss");
+    fs.writeFileSync(filePath, lssFile);
+
+    // Send the .lss file for download
+    res.download(filePath, "survey.lss", (err) => {
         if (err) {
-            return res.status(500).send("Error reading the file");
+            console.error("Server Error:", err);
         }
-
-        // Parse the markdown
-        const customHTML = parseMarkdownToHTML(data);
-        //console.log("customHTML" + customHTML);
-        const renderedHTML = marked(customHTML);
-
-        // Return the rendered HTML to the client
-        res.send(renderedHTML);
-
-        // Optionally, delete the uploaded file
-        fs.unlink(filePath, (err) => {
-            if (err) console.error("Error deleting file:", err);
-        });
+        fs.unlinkSync(filePath); // Clean up after download
     });
 });
 

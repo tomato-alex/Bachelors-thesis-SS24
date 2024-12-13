@@ -1,6 +1,6 @@
-import { QuestionnaireParser } from "./questionnaireParser.js";
+import { FormatConverter } from "./formatConverter.js";
 
-export class MarkdownToJson extends QuestionnaireParser {
+export class MarkdownToJson extends FormatConverter {
     constructor() {
         super();
 
@@ -17,7 +17,7 @@ export class MarkdownToJson extends QuestionnaireParser {
         this.currentGroup = this.createGroup("Group 1");
     }
 
-    parseData(markdown) {
+    async parseData(markdown) {
         const lines = markdown.split("\n");
 
         lines.forEach((line) => {
