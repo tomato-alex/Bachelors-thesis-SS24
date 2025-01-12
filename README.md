@@ -50,10 +50,25 @@ node servermockup.js
 
 Then, access the webpage at `http://localhost:3000/`. The GUI allows for users to upload a Markdown file with questionnaire syntax and visualizes the output directly in the browser.
 
+### Supported Limesurvey Question Types
+
+-   Radio Button
+-   Multi Select Question
+-   Input Text Area
+-   Display Text
+-   Date Input
+-   ~~Number Input~~ broken with LimeSurvey Update from December 2024
+-   ~~Dropdown~~ broken with LimeSurvey Update from December 2024
+
+Planned:
+
+-   rating (Five Point Choice)
+
 TODO v2:
 
 | Task                                                                        | Status                                    |
 | --------------------------------------------------------------------------- | ----------------------------------------- |
+| Priority! Check if compatibility works after update                         | In Progress Prio #1                       |
 | Implement a Json to LSS formatter                                           | In Progress (80% minimal feature support) |
 | Add inheritance and use the Strategy pattern to decide which parser to use. | In Progress (html parser needed)          |
 | ~~reimplement the frontend to be able to~~ display the lss structure        | In Progress (html parser needed)          |

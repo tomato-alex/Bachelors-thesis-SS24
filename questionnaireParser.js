@@ -11,6 +11,7 @@ export class QuestionnaireParser {
 
     async parseMarkdown(data, type) {
         const formatConverter = new MarkdownToJson();
+        console.log("Converting to JSON");
         this.convertedMarkdown = await formatConverter.parseData(data);
 
         if (type === undefined || type === "") {
@@ -37,6 +38,6 @@ export class QuestionnaireParser {
     }
 
     async generateJson() {
-        return this.convertedMarkdown;
+        return JSON.stringify(this.convertedMarkdown);
     }
 }

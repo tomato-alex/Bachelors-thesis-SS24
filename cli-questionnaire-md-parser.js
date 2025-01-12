@@ -8,7 +8,7 @@ program
     .description("CLI tool for parsing custom Markdown for questionnaires")
     .helpOption("-h, --help", "Display this help message")
     .argument("<inputFile>", "Markdown file to parse")
-    .option("-o, --output <outputFile>", "File to write the generated HTML to")
+    .option("-o, --output <outputFile>", "File to write the result to")
     .option("-t, --type <outputType>", "File Type to be written to")
     .option("-d, --display", "Display the generated HTML in the console")
     .option("--debug", "Display debug information")

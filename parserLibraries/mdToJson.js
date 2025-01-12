@@ -1,4 +1,9 @@
 import { FormatConverter } from "./formatConverter.js";
+import { QuestionParser } from "./questionParsers/questionParser.js";
+import { DropdownParser } from "./questionParsers/dropdownParser.js";
+import { DatepickerParser } from "./questionParsers/datepickerParser.js";
+import { NumberParser } from "./questionParsers/numberInputParser.js";
+import { DisplayTextParser } from "./questionParsers/displayTextParser.js";
 
 export class MarkdownToJson extends FormatConverter {
     constructor() {
@@ -14,6 +19,8 @@ export class MarkdownToJson extends FormatConverter {
             groups: [],
         };
 
+        this.questionParser = new QuestionParser();
+
         this.currentGroup = this.createGroup("Group 1");
     }
 
@@ -23,40 +30,52 @@ export class MarkdownToJson extends FormatConverter {
         lines.forEach((line) => {
             line = line.trim();
 
+            let linesToBeParsed = this.generateQuestionBlock(line, lines);
+
             // Detect survey title
             if (line.startsWith("# ") && this.json.title === "") {
                 this.json.title = line.substring(2);
             }
             // Group separator
             else if (line.startsWith("--- ")) {
-                if (this.currentGroup) {
-                    this.json.groups.push(this.currentGroup);
+                if (this.currentGroup.questions.length === 0) {
+                    this.currentGroup.name = line.substring(4);
+                } else {
+                    if (this.currentGroup) {
+                        this.json.groups.push(this.currentGroup);
+                    }
+                    this.currentGroup = this.createGroup(line.substring(4));
                 }
-                this.currentGroup = this.createGroup(line.substring(4));
             }
             // Detect questions
             else if (line.startsWith("?:")) {
-                this.parseQuestion(line, lines);
+                this.questionParser = new QuestionParser();
+                this.parseQuestion(linesToBeParsed);
             }
             // Slider or rating type
             else if (line.startsWith("/:")) {
-                this.parseRating(line);
+                // To be reimplemented
+                //this.parseRating(line);
             }
             // Dropdown type
             else if (line.startsWith("+:")) {
-                this.parseDropdown(line, lines);
+                this.questionParser = new DropdownParser();
+                this.parseQuestion(linesToBeParsed);
             }
             // Datepicker
             else if (line.startsWith("#:")) {
-                this.parseDatepicker(line);
+                this.questionParser = new DatepickerParser();
+                this.parseQuestion(linesToBeParsed);
             }
             // Number input
             else if (line.startsWith("%:")) {
-                this.parseNumberInput(line);
+                this.questionParser = new NumberParser();
+                this.parseQuestion(linesToBeParsed);
             }
             //Display text
             else if (line.startsWith("## ")) {
-                this.parseDisplayText(line);
+                this.questionParser = new DisplayTextParser();
+                this.parseQuestion(linesToBeParsed);
             }
         });
 
@@ -72,48 +91,32 @@ export class MarkdownToJson extends FormatConverter {
         return JSON.stringify(this.json, null, 2);
     }
 
-    parseLabel(line) {
-        const label = line.match(/:\s*"([^"]+)"/)[1];
-        return label;
-    }
+    generateQuestionBlock(line, lines) {
+        const startIndex = lines.indexOf(line + "\r");
+        let endIndex = lines.indexOf("\r", startIndex + 1);
 
-    parseQuestion(line, lines) {
-        const label = this.parseLabel(line);
-        const question = {
-            id: `${++this.idCounter}`,
-            code: `GQ0${++this.questionCount}`,
-            label: label,
-            mandatory: "N",
-            encrypted: "N",
-            question_order: this.questionCount,
-            options: [],
-        };
-
-        line += "\r";
-
-        if (lines[lines.indexOf(line) + 1].startsWith("() ")) {
-            question.type = "radio";
-            question.type_lss = "L";
-            question.question_theme_name = "listradio";
-            this.parseOptions(question, line, lines, "() ");
-        } else if (lines[lines.indexOf(line) + 1].startsWith("[] ")) {
-            question.type = "checkbox";
-            question.type_lss = "M";
-            question.question_theme_name = "multiplechoice";
-            this.parseOptionsMultiSelect(
-                this.currentGroup,
-                question,
-                line,
-                lines,
-                "[] "
-            );
-        } else {
-            question.type = "text";
-            question.type_lss = "T";
-            question.question_theme_name = "longfreetext";
+        if (endIndex === -1) {
+            endIndex = lines.length;
         }
 
-        this.currentGroup.questions.push(question);
+        return lines.slice(startIndex, endIndex);
+    }
+
+    addQuestionToGroup(question) {
+        question.question.code = `GQ0${++this.questionCount}`;
+        question.question.question_order = this.questionCount;
+
+        this.currentGroup.questions.push(question.question);
+        this.currentGroup.subquestions.push(...question.subquestions);
+    }
+
+    parseQuestion(linesToBeParsed) {
+        let parseQuestionResult = this.questionParser.parseQuestion(
+            linesToBeParsed,
+            this.idCounter
+        );
+        this.addQuestionToGroup(parseQuestionResult);
+        this.idCounter = parseQuestionResult.newId;
     }
 
     parseRating(line) {
@@ -143,114 +146,6 @@ export class MarkdownToJson extends FormatConverter {
             ],
         };
 
-        this.currentGroup.questions.push(question);
-    }
-
-    parseDropdown(line, lines) {
-        const label = this.parseLabel(line);
-        const question = {
-            id: `${++this.idCounter}`,
-            code: `GQ0${++this.questionCount}`,
-            label: label,
-            type: "dropdown",
-            type_lss: "!",
-            mandatory: "N",
-            encrypted: "N",
-            question_order: this.questionCount,
-            question_theme_name: "list_dropdown",
-            options: [],
-        };
-
-        line += "\r";
-
-        this.parseOptions(question, line, lines, "() ");
-
-        this.currentGroup.questions.push(question);
-    }
-
-    parseOptionsMultiSelect(group, question, line, lines, optionType) {
-        let orderCounter = 0;
-        while (lines[lines.indexOf(line) + 1].startsWith(optionType)) {
-            const option = lines[lines.indexOf(line) + 1]
-                .substring(3)
-                .replace(/\r/g, "");
-            group.subquestions.push({
-                qid: `${++this.idCounter}`,
-                parent_qid: question.id,
-                type_lss: "T",
-                code: `SQO0${orderCounter + 1}`,
-                other: "N",
-                encrypted: "N",
-                question_order: orderCounter++,
-                value: option,
-                label: option,
-            });
-
-            lines.splice(lines.indexOf(line) + 1, 1);
-        }
-    }
-
-    parseOptions(question, line, lines, optionType) {
-        // finds the index by the line
-        while (lines[lines.indexOf(line) + 1].startsWith(optionType)) {
-            const option = lines[lines.indexOf(line) + 1]
-                .substring(3)
-                .replace(/\r/g, "");
-            question.options.push({
-                value: option,
-                label: option,
-                id: `${++this.answerCounter}`,
-                code: `AO0${question.options.length + 1}`,
-            });
-            lines.splice(lines.indexOf(line) + 1, 1);
-        }
-    }
-
-    parseDatepicker(line) {
-        const label = this.parseLabel(line);
-        const question = {
-            id: `${++this.idCounter}`,
-            code: `GQ0${this.questionCount}`,
-            label: label,
-            type: "date",
-            type_lss: "D",
-            mandatory: "N",
-            encrypted: "N",
-            question_order: this.questionCount,
-            question_theme_name: "date",
-        };
-        this.currentGroup.questions.push(question);
-    }
-
-    parseNumberInput(line) {
-        const label = this.parseLabel(line);
-        const question = {
-            id: `${++this.idCounter}`,
-            code: `GQ0${this.questionCount}`,
-            label: label,
-            type: "numberinput",
-            type_lss: "N",
-            mandatory: "N",
-            encrypted: "N",
-            question_order: this.questionCount,
-            question_theme_name: "numerical",
-        };
-        this.currentGroup.questions.push(question);
-    }
-
-    parseDisplayText(line) {
-        const label = line.substring(3);
-        const question = {
-            id: `${++this.idCounter}`,
-            code: `GQ0${++this.questionCount}`,
-            label: label,
-            type: "displaytext",
-            type_lss: "X",
-            mandatory: "N",
-            encrypted: "N",
-            question_order: this.questionCount,
-            question_theme_name: "boilerplate",
-        };
         this.currentGroup.questions.push(question);
     }
 
