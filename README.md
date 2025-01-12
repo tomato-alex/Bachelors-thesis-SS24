@@ -38,9 +38,9 @@ Options:
 
 Example files and syntax you can find in ./examplesyntax specifically in `q4.md` and `q5.md`
 
-You can then use the exported .lss file and import it straightly into LimeSurvey.
+You can then use the exported .lss file and import it directly into LimeSurvey.
 
-### GUI Tool usage
+### GUI Tool usage (BETA)
 
 To run the graphical tool, use the following command:
 
@@ -48,7 +48,7 @@ To run the graphical tool, use the following command:
 node servermockup.js
 ```
 
-Then, access the webpage at `http://localhost:3000/`. The GUI allows for users to upload a Markdown file with questionnaire syntax and visualizes the output directly in the browser.
+Then, access the webpage at `http://localhost:3000/`. The GUI allows for users to upload a Markdown file with questionnaire syntax and downloads an .lss file ~~and visualizes the output directly in the browser~~.
 
 ### Supported Limesurvey Question Types
 
@@ -57,8 +57,8 @@ Then, access the webpage at `http://localhost:3000/`. The GUI allows for users t
 -   Input Text Area
 -   Display Text
 -   Date Input
--   ~~Number Input~~ broken with LimeSurvey Update from December 2024
--   ~~Dropdown~~ broken with LimeSurvey Update from December 2024
+-   Number Input
+-   Dropdown
 
 Planned:
 
@@ -66,12 +66,12 @@ Planned:
 
 TODO v2:
 
-| Task                                                                        | Status                                    |
-| --------------------------------------------------------------------------- | ----------------------------------------- |
-| Priority! Check if compatibility works after update                         | In Progress Prio #1                       |
-| Implement a Json to LSS formatter                                           | In Progress (80% minimal feature support) |
-| Add inheritance and use the Strategy pattern to decide which parser to use. | In Progress (html parser needed)          |
-| ~~reimplement the frontend to be able to~~ display the lss structure        | In Progress (html parser needed)          |
-| Implement syntax for required questions                                     | Analysis                                  |
-| support markdown in question titles (bold, underline, etc)                  | Analysis                                  |
-| rating implementation                                                       | Analysis                                  |
+| Task                                                                             | Status                                    |
+| -------------------------------------------------------------------------------- | ----------------------------------------- |
+| ~~Priority! Check if compatibility works after update~~                          | Done                                      |
+| Implement a Json to LSS formatter                                                | In Progress (95% minimal feature support) |
+| ~~ Add inheritance and use the Strategy pattern to decide which parser to use.~~ | Done                                      |
+| ~~reimplement the frontend to be able to display the lss structure ~~            | Out of scope                              |
+| Implement syntax for required questions                                          | In Progress (50%)                         |
+| support markdown in question titles (bold, underline, etc)                       | In Progress (30%)                         |
+| rating implementation                                                            | Backlog                                   |
