@@ -257,7 +257,7 @@ export class JsonToLss extends FormatConverter {
             qid: [{ _: "<![CDATA[" + (question?.id || question?.qid) + "]]>" }],
             question: [{ _: "<![CDATA[" + question.label + "]]>" }],
             // TODO implement help syntax help: [{ _: "<![CDATA[" + question.help + "]]>" }],
-            help: [{ _: "" }],
+            help: [{ _: "<![CDATA[" + question?.help_text + "]]>" }],
             language: [
                 {
                     _: "<![CDATA[" + this.output.languages[0].language + "]]>",

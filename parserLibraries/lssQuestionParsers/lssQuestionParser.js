@@ -1,9 +1,10 @@
 import { parse } from "marked";
 import { ParserHelper } from "./parserHelper.js";
+import { QuestionParser } from "../questionParser.js";
 
-export class QuestionParser {
+export class LssQuestionParser extends QuestionParser {
     constructor() {
-        console.log("Constructing questionParser");
+        super();
         this.parserHelper = new ParserHelper();
     }
 
@@ -58,6 +59,10 @@ export class QuestionParser {
             question.type = "checkbox";
             question.type_lss = "M";
             question.question_theme_name = "multiplechoice";
+
+            parseAnswersResult.options.forEach((option) => {
+                option.parent_qid = question.id;
+            });
 
             return {
                 question: question,
