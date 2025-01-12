@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
  <LimeSurveyDocType>Survey</LimeSurveyDocType>
- <DBVersion>623</DBVersion>
+ <DBVersion>627</DBVersion>
  <languages>
   <language>en</language>
  </languages>
