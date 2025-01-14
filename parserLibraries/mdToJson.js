@@ -4,6 +4,7 @@ import { DropdownParser } from "./lssQuestionParsers/dropdownParser.js";
 import { DatepickerParser } from "./lssQuestionParsers/datepickerParser.js";
 import { NumberParser } from "./lssQuestionParsers/numberInputParser.js";
 import { DisplayTextParser } from "./lssQuestionParsers/displayTextParser.js";
+import { QuestionParser } from "./questionParser.js";
 
 export class MarkdownToJson extends FormatConverter {
     constructor() {
@@ -19,16 +20,17 @@ export class MarkdownToJson extends FormatConverter {
             groups: [],
         };
 
-        this.questionParser = new LssQuestionParser();
+        this.questionParser = new QuestionParser();
 
         this.currentGroup = this.createGroup("Group 1");
     }
 
     async parseData(markdown) {
-        const lines = markdown.split("\n");
+        let lines = markdown.split("\n");
+        lines = lines.map((line) => line.replace(/\r/g, ""));
 
         lines.forEach((line) => {
-            line = line.trim();
+            line = line.trim().replace(/\r/g, "");
 
             let linesToBeParsed = this.generateQuestionBlock(line, lines);
 
@@ -92,9 +94,9 @@ export class MarkdownToJson extends FormatConverter {
     }
 
     generateQuestionBlock(line, lines) {
-        const startIndex = lines.indexOf(line + "\r");
-        let endIndex = lines.indexOf("\r", startIndex + 1);
-
+        const startIndex = lines.indexOf(line);
+        let endIndex = lines.indexOf("", startIndex + 1);
+        //console.log("start index", startIndex, "end index", endIndex);
         if (endIndex === -1) {
             endIndex = lines.length;
         }
