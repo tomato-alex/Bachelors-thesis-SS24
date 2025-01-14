@@ -1,10 +1,9 @@
 import { FormatConverter } from "./formatConverter.js";
-import { LssQuestionParser } from "./lssQuestionParsers/lssQuestionParser.js";
-import { DropdownParser } from "./lssQuestionParsers/dropdownParser.js";
-import { DatepickerParser } from "./lssQuestionParsers/datepickerParser.js";
-import { NumberParser } from "./lssQuestionParsers/numberInputParser.js";
-import { DisplayTextParser } from "./lssQuestionParsers/displayTextParser.js";
-import { QuestionParser } from "./questionParser.js";
+import { QuestionParser } from "./QuestionParsers/questionParser.js";
+import { DropdownParser } from "./QuestionParsers/dropdownParser.js";
+import { DatepickerParser } from "./QuestionParsers/datepickerParser.js";
+import { NumberParser } from "./QuestionParsers/numberInputParser.js";
+import { DisplayTextParser } from "./QuestionParsers/displayTextParser.js";
 
 export class MarkdownToJson extends FormatConverter {
     constructor() {
@@ -51,7 +50,7 @@ export class MarkdownToJson extends FormatConverter {
             }
             // Detect questions
             else if (line.startsWith("?:")) {
-                this.questionParser = new LssQuestionParser();
+                this.questionParser = new QuestionParser();
                 this.parseQuestion(linesToBeParsed);
             }
             // Slider or rating type

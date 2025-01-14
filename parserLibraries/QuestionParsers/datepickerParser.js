@@ -1,6 +1,6 @@
-import { LssQuestionParser } from "./lssQuestionParser.js";
+import { QuestionParser } from "./questionParser.js";
 
-export class DatepickerParser extends LssQuestionParser {
+export class DatepickerParser extends QuestionParser {
     parseQuestion(lines, currentId) {
         let idCounter = currentId;
 

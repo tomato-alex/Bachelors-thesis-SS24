@@ -1,6 +1,6 @@
-import { LssQuestionParser } from "./lssQuestionParser.js";
+import { QuestionParser } from "./questionParser.js";
 
-export class DisplayTextParser extends LssQuestionParser {
+export class DisplayTextParser extends QuestionParser {
     parseQuestion(lines, currentId) {
         let idCounter = currentId;
 

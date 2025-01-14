@@ -1,10 +1,8 @@
 import { parse } from "marked";
 import { ParserHelper } from "./parserHelper.js";
-import { QuestionParser } from "../questionParser.js";
 
-export class LssQuestionParser extends QuestionParser {
+export class QuestionParser {
     constructor() {
-        super();
         this.parserHelper = new ParserHelper();
     }
 
