@@ -6,14 +6,11 @@ import path from "path";
 export class JsonToLss extends FormatConverter {
     constructor() {
         super();
-        this.groupCount = 1;
         this.groupOrder = 1;
         this.questionOrder = 1;
         this.surveyId = 123456;
-        this.finalDocument;
         this.structureFiles = [];
         this.questionsWithAnswers = ["radio", "dropdown", "checkbox"];
-        //this.init();
     }
 
     async parseData(json) {
@@ -230,7 +227,7 @@ export class JsonToLss extends FormatConverter {
 
     generateSubquestion(subquestion, groupId) {
         let row = {
-            qid: [{ _: "<![CDATA[" + subquestion.qid + "]]>" }],
+            qid: [{ _: "<![CDATA[" + subquestion.id + "]]>" }],
             parent_qid: [{ _: "<![CDATA[" + subquestion.parent_qid + "]]>" }],
             sid: [{ _: "<![CDATA[" + this.surveyId + "]]>" }],
             gid: [{ _: "<![CDATA[" + groupId + "]]>" }],

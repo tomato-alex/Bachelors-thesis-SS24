@@ -37,15 +37,15 @@ export class ParserHelper {
                     });
                 } else if (optionType === "[] ") {
                     options.push({
-                        qid: `${++idCounter}`,
+                        value: option,
+                        label: option,
+                        id: `${++idCounter}`,
+                        code: `SQO0${idCounter}`,
                         parent_qid: "",
                         type_lss: "T",
-                        code: `SQO0${idCounter}`,
                         other: "N",
                         encrypted: "N",
                         question_order: idCounter,
-                        value: option,
-                        label: option,
                     });
                 }
             }

@@ -58,6 +58,9 @@ export class QuestionParser {
             question.type_lss = "M";
             question.question_theme_name = "multiplechoice";
 
+            question.options = parseAnswersResult.options;
+
+            // lss specific
             parseAnswersResult.options.forEach((option) => {
                 option.parent_qid = question.id;
             });
