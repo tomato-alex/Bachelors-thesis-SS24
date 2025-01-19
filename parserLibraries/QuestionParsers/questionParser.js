@@ -1,4 +1,3 @@
-import { parse } from "marked";
 import { ParserHelper } from "./parserHelper.js";
 
 export class QuestionParser {
