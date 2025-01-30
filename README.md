@@ -8,9 +8,12 @@ This repository contains the code for the **Markdown for Questionnaires** projec
 
 ```bash
 node
+npm
 ```
 
 ### CLI Usage
+
+After cloning the repository, run `npm install` to ensure all dependencies are installed.
 
 ```bash
 node cli-questionnaire-md-parser.js
@@ -35,6 +38,8 @@ Options:
 `node cli-questionnaire-md-parser.js ../questionnaire.md -o output.lss -t lss` > this will generate a lss file for LimeSurvey
 
 `node cli-questionnaire-md-parser.js ../questionnaire.md -o output.json` > this will generate a json file structure
+
+`node cli-questionnaire-md-parser.js ../questionnaire.md -o outputDir/output.lss` > if an output directory is specified but doesn't exist, it will be created
 
 Example files and syntax you can find in ./examplesyntax specifically in `q4.md` and `q5.md`
 

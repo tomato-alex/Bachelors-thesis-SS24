@@ -14,6 +14,7 @@ export class QuestionnaireParser {
         console.log("Converting to JSON");
         this.convertedMarkdown = await formatConverter.parseData(data);
 
+        // Default to JSON if no type is specified
         if (type === undefined || type === "") {
             type = "json";
         }
