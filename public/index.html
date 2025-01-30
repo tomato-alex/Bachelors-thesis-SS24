@@ -230,7 +230,7 @@
                 .addEventListener("click", () => {
                     const markdownText = markdownInput.value;
 
-                    fetch("/parse", {
+                    fetch("/api/parse", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ markdown: markdownText }),

@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 });
 
 // Endpoint to handle the file upload and parsing
-app.post("/parse", async (req, res) => {
+app.post("/api/parse", async (req, res) => {
     const markdown = req.body.markdown;
 
     const questionnaireParser = new QuestionnaireParser();
