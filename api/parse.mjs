@@ -1,4 +1,4 @@
-import { QuestionnaireParser } from "../../questionnaireParser.js";
+import { QuestionnaireParser } from "../questionnaireParser.js";
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
