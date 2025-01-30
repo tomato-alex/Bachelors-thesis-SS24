@@ -58,6 +58,16 @@ export class JsonToLss extends FormatConverter {
         return this.output;
     }
 
+    /**
+     * Initializes the rows in the output structure for the survey, setting up the primary
+     * attributes such as survey ID, language, and title. It also prepares empty rows for
+     * answers, answer localizations, groups, group localizations, questions, question
+     * localizations, subquestions, and question attributes. This function is essential in
+     * ensuring the structure is ready to be populated with survey data.
+     *
+     * @param {Object} jsonData - The JSON data containing information such as language and
+     *                            title used to initialize the survey structure.
+     */
     initializeRows(jsonData) {
         this.output.surveys[0].rows[0].row[0].sid = this.surveyId;
         this.output.surveys[0].rows[0].row[0].language = this.generateLanguage(
@@ -335,6 +345,18 @@ export class JsonToLss extends FormatConverter {
         return row;
     }
 
+    /**
+     * Asynchronously generates the initial structure by parsing XML files.
+     *
+     * This function reads a list of predefined XML structure files located in
+     * the "lssStructureFiles" directory, parses them using an XML parser,
+     * and returns the parsed structures as a result object.
+     *
+     * @returns {Promise<Object>} A promise that resolves to an object containing
+     * the parsed structures keyed by their respective file names without extensions.
+     *
+     * @throws Will throw an error if reading or parsing any file fails.
+     */
     async generateInitialStructure() {
         const structureFiles = [
             "./lssStructureFiles/SurveyPrefilled.lss",
@@ -347,7 +369,6 @@ export class JsonToLss extends FormatConverter {
             "./lssStructureFiles/rating.lss",
             // free text area doesnt need a lss file
         ];
-        //const skeletonStructureFile = "./lssStructureFiles/SurveyPrefilled.lss";
 
         try {
             const parser = new xml2js.Parser();

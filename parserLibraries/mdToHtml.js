@@ -2,6 +2,12 @@
 import { marked } from "marked";
 import { FormatConverter } from "./formatConverter.js";
 
+/*
+ * The following class is DEPRECATED.
+ * It uses the initial v0.1 syntax to parse questions and generate HTML.
+ * Left as a reminder and inspiration for future implementations.
+ * Mainly as a template of what html to generate.
+ */
 export class MarkdownToHtml extends FormatConverter {
     constructor() {
         super();

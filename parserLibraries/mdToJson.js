@@ -21,6 +21,8 @@ export class MarkdownToJson extends FormatConverter {
 
         this.questionParser = new QuestionParser();
 
+        // Autogenerate group name
+        // Can be overwritten if the line after the title is a group separator
         this.currentGroup = this.createGroup("Group 1");
     }
 
@@ -33,7 +35,7 @@ export class MarkdownToJson extends FormatConverter {
 
             let linesToBeParsed = this.generateQuestionBlock(line, lines);
 
-            // Detect survey title
+            // Detect survey title if there is none
             if (line.startsWith("# ") && this.json.title === "") {
                 this.json.title = line.substring(2);
             }
@@ -54,9 +56,8 @@ export class MarkdownToJson extends FormatConverter {
                 this.parseQuestion(linesToBeParsed);
             }
             // Slider or rating type
-            else if (line.startsWith("/:")) {
-                // To be reimplemented
-                //this.parseRating(line);
+            else if (line.startsWith("*:")) {
+                // reserved for rating
             }
             // Dropdown type
             else if (line.startsWith("+:")) {
@@ -64,12 +65,12 @@ export class MarkdownToJson extends FormatConverter {
                 this.parseQuestion(linesToBeParsed);
             }
             // Datepicker
-            else if (line.startsWith("#:")) {
+            else if (line.startsWith("/:")) {
                 this.questionParser = new DatepickerParser();
                 this.parseQuestion(linesToBeParsed);
             }
             // Number input
-            else if (line.startsWith("%:")) {
+            else if (line.startsWith("#:")) {
                 this.questionParser = new NumberParser();
                 this.parseQuestion(linesToBeParsed);
             }
@@ -120,6 +121,18 @@ export class MarkdownToJson extends FormatConverter {
         this.idCounter = parseQuestionResult.newId;
     }
 
+    createGroup(name) {
+        return {
+            id: ++this.idCounter,
+            code: `G0${this.json.groups.length + 1}`,
+            questions: [],
+            subquestions: [],
+            name: name,
+        };
+    }
+
+    // Legacy code from the initial prototype, can be implemented in a separate RatingParser class
+    /*
     parseRating(line) {
         const [label, minMax] = line
             .match(/:\s*"([^"]+)"\s*(\d+\s*\d*)?/)
@@ -149,14 +162,5 @@ export class MarkdownToJson extends FormatConverter {
 
         this.currentGroup.questions.push(question);
     }
-
-    createGroup(name) {
-        return {
-            id: ++this.idCounter,
-            code: `G0${this.json.groups.length + 1}`,
-            questions: [],
-            subquestions: [],
-            name: name,
-        };
-    }
+    */
 }

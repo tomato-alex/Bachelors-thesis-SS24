@@ -11,6 +11,9 @@ export class QuestionParser {
         const label = this.parserHelper.parseLabel(lines);
         const helpText = this.parserHelper.parseHelpText(lines);
 
+        // When updating to TypeScript,
+        // Set the question to have those fields mandatory
+        // The other fields should be optional.
         let question = {
             id: `${++idCounter}`,
             code: "",
@@ -26,6 +29,7 @@ export class QuestionParser {
             (line) => line.startsWith("()") || line.startsWith("[]")
         );
 
+        // If just a single line of text, it's a free text question
         if (!answerLine) {
             question.type = "text";
             question.type_lss = "T";
@@ -40,6 +44,7 @@ export class QuestionParser {
             idCounter
         );
 
+        // The brackets of the first line only are relevant
         if (answerLine.startsWith("()")) {
             question.type = "radio";
             question.type_lss = "L";
