@@ -47,9 +47,21 @@ You can then use the exported .lss file and import it directly into LimeSurvey.
 
 ### GUI Tool usage (BETA)
 
-To run the graphical tool, use the following command:
+There are two ways to run the GUI tool.
+
+##### Hosted on Vercel
+
+There is a Node.js server hosted on [Vercel](https://vercel.app).
+( [Markdown to LSS Converter](https://markdown-for-questionnaires.vercel.app/) )
+
+##### Running the tool locally
+
+Alternatively, you can clone the repository and run the tool locally!
+
+To run the graphical tool locally after cloning, use the following commands:
 
 ```bash
+npm install
 node servermockup.js
 ```
 
@@ -57,26 +69,21 @@ Then, access the webpage at `http://localhost:3000/`. The GUI allows for users t
 
 ### Supported Limesurvey Question Types
 
--   Radio Button
--   Multi Select Question
--   Input Text Area
--   Display Text
--   Date Input
--   Number Input
--   Dropdown
+-   [x] Radio Button
+-   [x] Multi Select Question
+-   [x] Input Text Area
+-   [x] Display Text
+-   [x] Date Input
+-   [x] Number Input
+-   [x] Dropdown
+-   [ ] Rating (Five Point Choice)
 
-Planned:
-
--   rating (Five Point Choice)
-
-TODO v2:
-
-| Task                                                                             | Status                                    |
-| -------------------------------------------------------------------------------- | ----------------------------------------- |
-| ~~Priority! Check if compatibility works after update~~                          | Done                                      |
-| Implement a Json to LSS formatter                                                | In Progress (95% minimal feature support) |
-| ~~ Add inheritance and use the Strategy pattern to decide which parser to use.~~ | Done                                      |
-| ~~reimplement the frontend to be able to display the lss structure ~~            | Out of scope                              |
-| Implement syntax for required questions                                          | In Progress (50%)                         |
-| support markdown in question titles (bold, underline, etc)                       | In Progress (30%)                         |
-| rating implementation                                                            | Backlog                                   |
+| Task                                                                           | Status       |
+| ------------------------------------------------------------------------------ | ------------ |
+| ~~Priority! Check if compatibility works after update~~                        | Done         |
+| ~~Implement a Json to LSS formatter~~                                          | Done         |
+| ~~Add inheritance and use the Strategy pattern to decide which parser to use~~ | Done         |
+| reimplement the frontend to be able to display the lss structure               | Out of scope |
+| Implement syntax for required questions                                        | Out of scope |
+| support markdown in question titles (bold, underline, etc)                     | Out of scope |
+| rating implementation                                                          | Backlog      |

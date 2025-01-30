@@ -5,11 +5,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Markdown to LSS Converter</title>
         <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="tooltipstyle.css" />
     </head>
     <body>
         <h1>Markdown to LimeSurvey Converter</h1>
         <div class="columnholder">
             <div class="container">
+                <div class="tooltip" onclick="displayToolTip()">
+                    <span class="help-icon">&#x1F6C8;</span>
+                    <span class="tooltip-text">
+                        Example Syntax (click for more): <br />
+                        ?:"What is your favorite color?"
+                    </span>
+                </div>
+
+                Syntax Help
+
                 <div id="dropzone">
                     <div class="dropzone-content">
                         <h2>&plus;</h2>
@@ -33,6 +44,131 @@
                 <p>Future Predisplay</p>
             </div-->
         </div>
+
+        <div id="popup" class="popup">
+            <span class="close-btn" id="close-btn">&times;</span>
+            <h2>Markdown Syntax Help</h2>
+            <table border="1" cellpadding="10" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Question Type</th>
+                        <th>Syntax</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Title</td>
+                        <td><code>#</code></td>
+                        <td>
+                            <code> # Survey Title </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Text Input</td>
+                        <td><code>?:""</code></td>
+                        <td><code>?:"What is your favorite color?"</code></td>
+                    </tr>
+                    <tr>
+                        <td>Radio Buttons</td>
+                        <td>
+                            <code>
+                                ?:"Question"<br />
+                                ()
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                ?:"Which color do you prefer?"<br />
+                                () Red<br />
+                                () Green<br />
+                                () Blue
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Checkbox</td>
+                        <td>
+                            <code
+                                >?:"" <br />
+                                []
+                            </code>
+                        </td>
+                        <td>
+                            <code
+                                >?:"Select your hobbies" <br />
+                                [] Reading <br />
+                                [] Cooking <br />
+                                [] Sports</code
+                            >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dropdown</td>
+                        <td>
+                            <code>
+                                +:"" <br />
+                                ()
+                            </code>
+                        </td>
+                        <td>
+                            <code>
+                                +:"What language are you using mostly?" <br />
+                                () English <br />
+                                () Spanish <br />
+                                () German <br />
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date Input</td>
+                        <td><code>/:""</code></td>
+                        <td>
+                            <code> /:"What day is today?" </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Number Input</td>
+                        <td><code>#:""</code></td>
+                        <td>
+                            <code> #:"How many 10's are there in 100?" </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Display Text</td>
+                        <td><code>## </code></td>
+                        <td>
+                            <code> ## This is a short display text. </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Group</td>
+                        <td><code>--- </code></td>
+                        <td>
+                            <code>
+                                --- Group 1 <br />
+                                // Question 1 <br />
+                                // Question 2 <br />
+                                --- Group 2 <br />
+                                // Question 3 <br />
+                            </code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Help Text</td>
+                        <td><code>::</code></td>
+                        <td>
+                            <code>
+                                ?:"Give an example of a paradox?" <br />
+                                :: Keep your answer short.
+                            </code>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="overlay" class="overlay"></div>
 
         <script>
             const markdownInput = document.getElementById("markdown-input");
@@ -113,5 +249,6 @@
                         .catch((error) => console.error("Error:", error));
                 });
         </script>
+        <script src="tooltipscript.js"></script>
     </body>
 </html>
