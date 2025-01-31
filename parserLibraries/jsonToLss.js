@@ -375,6 +375,7 @@ export class JsonToLss extends FormatConverter {
             let result = {};
 
             for (const structureFile of structureFiles) {
+                path.join(process.cwd(), "lssStructureFiles");
                 const filePath = path.resolve(process.cwd(), structureFile);
 
                 console.log(`Reading file: ${filePath}`);
