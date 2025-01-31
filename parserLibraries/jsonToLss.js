@@ -376,6 +376,9 @@ export class JsonToLss extends FormatConverter {
 
             for (const structureFile of structureFiles) {
                 const filePath = path.resolve(process.cwd(), structureFile);
+
+                console.log(`Reading file: ${filePath}`);
+
                 // Use promise-based fs to read the file
                 const data = await fs.readFile(
                     filePath,
