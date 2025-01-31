@@ -47,6 +47,13 @@ You can then use the exported .lss file and import it directly into LimeSurvey.
 
 ### GUI Tool usage (BETA)
 
+There are two ways to run the GUI tool.
+
+##### Hosted on Vercel
+
+There is a Node.js server hosted on [Vercel](https://vercel.app).
+( [Markdown to LSS Converter](https://markdown-for-questionnaires.vercel.app/) )
+
 ##### Running the tool locally
 
 Alternatively, you can clone the repository and run the tool locally!
