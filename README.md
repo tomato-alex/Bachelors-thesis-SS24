@@ -16,8 +16,8 @@ npm
 After cloning the repository, run `npm install` to ensure all dependencies are installed.
 
 ```bash
-node cli-questionnaire-md-parser.js
-Usage: cli-questionnaire-md-parser [options] <inputFile>
+node md4q.js
+Usage: md4q [options] <inputFile>
 
 CLI tool for parsing custom Markdown for questionnaires
 
@@ -26,24 +26,25 @@ Arguments:
 
 Options:
   -V, --version              output the version number
-  -o, --output <outputFile>  File to write the generated HTML to
+  -o, --output <outputFile>  File to write the result to
   -t, --type <outputType>    File Type to be written to
   -d, --display              Display the generated HTML in the console
+  -s, --syntax               Display the parsed syntax in the console
   --debug                    Display debug information
   -h, --help                 Display this help message
 ```
 
 #### Example usage:
 
-`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.lss -t lss` > this will generate a lss file for LimeSurvey
+`node md4q.js ../questionnaire.md -o output.lss -t lss` > this will generate a lss file for LimeSurvey
 
-`node cli-questionnaire-md-parser.js ../questionnaire.md -o output.json` > this will generate a json file structure
+`node md4q.js ../questionnaire.md -o output.json` > this will generate a json file structure
 
-`node cli-questionnaire-md-parser.js ../questionnaire.md -o outputDir/output.lss` > if an output directory is specified but doesn't exist, it will be created
+`node md4q.js ../questionnaire.md -o outputDir/output.lss` > if an output directory is specified but doesn't exist, it will be created
 
-Example files and syntax you can find in ./examplesyntax specifically in `q4.md` and `q5.md`
+Example files and syntax you can find in `./examplesyntax` specifically in `q4.md` and `q5.md`
 
-You can then use the exported .lss file and import it directly into LimeSurvey.
+You can then use the exported `.lss` file and import it directly into LimeSurvey.
 
 ### GUI Tool usage (BETA)
 

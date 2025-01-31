@@ -375,10 +375,11 @@ export class JsonToLss extends FormatConverter {
             let result = {};
 
             for (const structureFile of structureFiles) {
+                // Very relevant for the vercel app to make sure the structure files are in the path
                 path.join(process.cwd(), "lssStructureFiles");
                 const filePath = path.resolve(process.cwd(), structureFile);
 
-                console.log(`Reading file: ${filePath}`);
+                //console.log(`Reading file: ${filePath}`);
 
                 // Use promise-based fs to read the file
                 const data = await fs.readFile(

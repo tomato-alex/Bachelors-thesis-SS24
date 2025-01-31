@@ -12,9 +12,73 @@ program
     .option("-o, --output <outputFile>", "File to write the result to")
     .option("-t, --type <outputType>", "File Type to be written to")
     .option("-d, --display", "Display the generated HTML in the console")
+    .option("-s, --syntax", "Display the parsed syntax in the console")
     .option("--debug", "Display debug information")
     .action(async (inputFile, options) => {
         try {
+            if (options.syntax) {
+                const syntax = [
+                    { type: "Title", syntax: "#", example: "# Title" },
+                    {
+                        type: "Display Text",
+                        syntax: "##",
+                        example: "## Display Text",
+                    },
+                    {
+                        type: "Question",
+                        syntax: "?:",
+                        example: '?:"What is your favorite color?"',
+                    },
+                    {
+                        type: "Radio Button",
+                        syntax: "?:\n()",
+                        example:
+                            '?:"What color do you prefer?"\n() Red\n() Blue\n() Green',
+                    },
+                    {
+                        type: "Checkbox",
+                        syntax: "?:\n[]",
+                        example:
+                            '?:"Select your hobbies"\n[] Reading\n[] Cooking\n[] Sports',
+                    },
+                    {
+                        type: "Dropdown",
+                        syntax: "+:\n()",
+                        example:
+                            '?:"What is your favorite color?"\n() Red\n() Blue\n() Green',
+                    },
+                    {
+                        type: "Date",
+                        syntax: "/:",
+                        example: '/:"When is your birthday?"',
+                    },
+                    {
+                        type: "Number",
+                        syntax: "/:",
+                        example: '/:"How old are you?"',
+                    },
+                    {
+                        type: "Group",
+                        syntax: "---",
+                        example: "--- This is a new group name",
+                    },
+                    {
+                        type: "Help Text",
+                        syntax: "::",
+                        example: '?:"Write a joke:"\n:: Use only 3 sentences.',
+                    },
+                ];
+
+                const red = "\x1b[31m";
+                const green = "\x1b[32m";
+                const reset = "\x1b[0m";
+
+                console.log(red + '\n\nTreat "\\n" as a new line!\n' + reset);
+                console.log("Syntax:");
+                console.table(syntax);
+                process.exit(0);
+            }
+
             if (!fs.existsSync(inputFile)) {
                 console.error(`Error: Input file ${inputFile} does not exist.`);
                 process.exit(1);
