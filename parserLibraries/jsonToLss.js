@@ -359,14 +359,14 @@ export class JsonToLss extends FormatConverter {
      */
     async generateInitialStructure() {
         const structureFiles = [
-            "./public/lssStructureFiles/SurveyPrefilled.lss",
-            "./public/lssStructureFiles/checkbox.lss",
-            "./public/lssStructureFiles/date.lss",
-            "./public/lssStructureFiles/displaytext.lss",
-            "./public/lssStructureFiles/dropdown.lss",
-            "./public/lssStructureFiles/numberinput.lss",
-            "./public/lssStructureFiles/radio.lss",
-            "./public/lssStructureFiles/rating.lss",
+            "public/lssStructureFiles/SurveyPrefilled.lss",
+            "public/lssStructureFiles/checkbox.lss",
+            "public/lssStructureFiles/date.lss",
+            "public/lssStructureFiles/displaytext.lss",
+            "public/lssStructureFiles/dropdown.lss",
+            "public/lssStructureFiles/numberinput.lss",
+            "public/lssStructureFiles/radio.lss",
+            "public/lssStructureFiles/rating.lss",
             // free text area doesnt need a lss file
         ];
 
